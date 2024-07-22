@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 
-// const ChoosePlan = () => {
-// const { data: coaches } = useQuery({
-//   queryKey: ["coaches"],
-//   queryFn: 
-  
-// });
+const ChoosePlan = () => {
+  // const { data: coaches } = useQuery({
+  //   queryKey: ["coaches"],
+  //   queryFn:
+
+  // });
 
   return (
     <View
