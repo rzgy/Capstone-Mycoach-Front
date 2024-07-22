@@ -23,8 +23,10 @@ const fetchOneCoaches = async () => {
   return data;
 };
 
-const login = async (coachInfo) => {
+const loginCoach = async (coachInfo) => {
+  console.log("first");
   const { data } = await instance.post("/coaches/login", coachInfo);
+  console.log("data");
   storeToken(data.token);
   return data;
 };
@@ -63,7 +65,7 @@ const updateCoach = async (coachInfo) => {
 export {
   fetchAllCoaches,
   fetchOneCoaches,
-  login,
+  loginCoach,
   register,
   deleteCoaches,
   updateCoach,
