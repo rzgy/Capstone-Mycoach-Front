@@ -4,8 +4,10 @@ import { storeToken } from "./storage";
 // Coach api
 
 const fetchAllCoaches = async () => {
+  console.log("resresresrser");
   try {
     const { data } = await instance.get("/coaches");
+    // console.log("coaches", data);
     return data;
   } catch (error) {
     console.error("Failed to fetch Coaches", error);
