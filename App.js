@@ -6,7 +6,7 @@ import MainCoachNav from "./src/navigation/MainCoachNav";
 import CoachContext from "./src/Context/UserContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getToken } from "./src/api/storage";
+import { getToken, removeToken } from "./src/api/storage";
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -24,6 +24,7 @@ export default function App() {
   useEffect(() => {
     checkToken();
   });
+
   return (
     <QueryClientProvider client={queryClient}>
       <CoachContext.Provider value={[coach, setCoach]}>
