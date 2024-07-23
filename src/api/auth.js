@@ -4,8 +4,10 @@ import { storeToken } from "./storage";
 // Coach api
 
 const fetchAllCoaches = async () => {
+  console.log("resresresrser");
   try {
     const { data } = await instance.get("/coaches");
+    // console.log("coaches", data);
     return data;
   } catch (error) {
     console.error("Failed to fetch Coaches", error);
@@ -23,8 +25,10 @@ const fetchOneCoaches = async () => {
   return data;
 };
 
-const login = async (coachInfo) => {
+const loginCoach = async (coachInfo) => {
+  console.log("first");
   const { data } = await instance.post("/coaches/login", coachInfo);
+  console.log("data");
   storeToken(data.token);
   return data;
 };
@@ -63,7 +67,7 @@ const updateCoach = async (coachInfo) => {
 export {
   fetchAllCoaches,
   fetchOneCoaches,
-  login,
+  loginCoach,
   register,
   deleteCoaches,
   updateCoach,
