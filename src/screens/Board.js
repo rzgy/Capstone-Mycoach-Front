@@ -6,7 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Board = () => {
   const Navigation = useNavigation();
   const handleGoToLoginCoach = () => {
-    Navigation.navigate("coachProfile");
+    Navigation.navigate("loginCoach");
   };
   const handleGoToLoginAthlete = () => {
     Navigation.navigate("loginAthlete");

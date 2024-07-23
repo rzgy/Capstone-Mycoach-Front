@@ -18,12 +18,12 @@ const BoardNavigation = () => {
     <stack.Navigator
       screenOptions={{
         headerShown: false,
-        initialRouteName: "AboutUs",
+        initialRouteName: "board",
       }}
     >
+      <stack.Screen name="board" component={Board} />
       <stack.Screen name="AboutUs" component={AboutUs} />
       <stack.Screen name="support" component={Support} />
-      <stack.Screen name="board" component={Board} />
       <stack.Screen name="loginCoach" component={LoginCoach} />
       <stack.Screen name="loginAthlete" component={LoginAthlete} />
       <stack.Screen name="choosePlayer" component={ChoosePlayer} />
