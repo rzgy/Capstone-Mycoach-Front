@@ -5,8 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const OnBoardingSlide = () => {
   const Navigation = useNavigation();
-  const handleGoToChoosePlan = () => {
-    Navigation.navigate("ChoosePlan");
+  const handleGoToChoosyourCoach = () => {
+    Navigation.navigate("ChooseyourCoach");
   };
 
   return (
@@ -44,12 +44,16 @@ const OnBoardingSlide = () => {
         </View>
 
         <View
-          style={{ backgroundColor: "#6898ab", padding: 10, borderRadius: 28 }}
+          style={{
+            backgroundColor: "#6898ab",
+            padding: 10,
+            borderRadius: 28,
+          }}
         >
           <Button
             title=" Continue"
             color="white"
-            onPress={handleGoToChoosePlan}
+            onPress={handleGoToChoosyourCoach}
           />
         </View>
       </View>
