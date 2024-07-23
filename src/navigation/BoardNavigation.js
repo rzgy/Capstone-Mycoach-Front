@@ -21,7 +21,6 @@ const BoardNavigation = () => {
       <stack.Screen name="board" component={Board} />
       <stack.Screen name="loginCoach" component={LoginCoach} />
       <stack.Screen name="loginAthlete" component={LoginAthlete} />
-      <stack.Screen name="choosePlayer" component={ChoosePlayer} />
       <stack.Screen name="CreateAccount" component={CreateAccount} />
       <stack.Screen name="ChoosePlan" component={ChoosePlan} />
     </stack.Navigator>

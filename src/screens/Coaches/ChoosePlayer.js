@@ -23,10 +23,10 @@ const ChoosePlayer = () => {
           height: 40,
         }}
       >
-        <Button title="<" color={"white"} onPress={() => navigation.goBack()} />
+        <Button title="<" color={"black"} onPress={() => navigation.goBack()} />
       </View>
       <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
-        Hi
+        Hi Ali
       </Text>
     </View>
   );
