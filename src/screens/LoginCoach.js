@@ -32,7 +32,6 @@ const LoginCoach = () => {
     mutationFn: () => loginCoach(coachInfo),
     onSuccess: () => {
       setCoach(true);
-      storeToken(data.token);
       navigation.navigate("choosePlayer");
 
       Toast.success("Login successful!");

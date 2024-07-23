@@ -5,17 +5,16 @@ import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
 import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
 import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
 
-const MainCoachNav = createBottomTabNavigator();
-
-function MyTabs() {
+const Tab = createBottomTabNavigator();
+const MainCoachNav = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="choosePlayer" component={ChoosePlayer} />
-      <Tab.Screen name="playerEdit" component={Playeredit} />
-      <Tab.Screen name="coachProfile" component={CoachProfile} />
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Athlete" component={ChoosePlayer} />
+      <Tab.Screen name="Workout" component={Playeredit} />
+      <Tab.Screen name="Profile" component={CoachProfile} />
     </Tab.Navigator>
   );
-}
+};
 
 export default MainCoachNav;
 
