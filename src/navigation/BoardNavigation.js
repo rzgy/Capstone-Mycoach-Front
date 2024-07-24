@@ -22,12 +22,9 @@ const BoardNavigation = () => {
       }}
     >
       <stack.Screen name="board" component={Board} />
-      <stack.Screen name="AboutUs" component={AboutUs} />
-      <stack.Screen name="support" component={Support} />
+
       <stack.Screen name="loginCoach" component={LoginCoach} />
       <stack.Screen name="loginAthlete" component={LoginAthlete} />
-      <stack.Screen name="choosePlayer" component={ChoosePlayer} />
-      <stack.Screen name="coachProfile" component={CoachProfile} />
       <stack.Screen name="CreateAccount" component={CreateAccount} />
       <stack.Screen name="ChooseyourCoach" component={ChoosePlan} />
     </stack.Navigator>

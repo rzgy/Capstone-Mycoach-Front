@@ -7,6 +7,7 @@ import CoachContext from "./src/Context/UserContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getToken, removeToken } from "./src/api/storage";
+import CoachStackNav from "./src/navigation/CoachNav/CoachStackNav";
 
 const queryClient = new QueryClient();
 export default function App() {
