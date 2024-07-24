@@ -42,6 +42,15 @@ const register = async (coachInfo) => {
   return data;
 };
 
+const UserRegister = async (userInfo) => {
+  const formData = new FormData();
+  for (const key in userInfo) formData.append(key, userInfo[key]);
+
+  const { data } = await instance.post("/users/register", formData);
+  storeToken(data.token);
+  return data;
+};
+
 const deleteCoaches = async (coachId) => {
   try {
     const { data } = await instance.delete(`/coaches/${coachId}`);
@@ -71,4 +80,5 @@ export {
   register,
   deleteCoaches,
   updateCoach,
+  UserRegister,
 };
