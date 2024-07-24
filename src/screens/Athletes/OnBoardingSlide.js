@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { Button, Image } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -13,13 +19,19 @@ const OnBoardingSlide = () => {
     <View
       style={{
         flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 80,
+        width: "100%",
+        paddingTop: 60,
+        paddingHorizontal: 10,
         backgroundColor: "#182026",
       }}
     >
-      <View>
+      <ScrollView
+        contentContainerStyle={{
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Text
           style={{
             fontSize: 32,
@@ -43,20 +55,17 @@ const OnBoardingSlide = () => {
           </Text>
         </View>
 
-        <View
+        <TouchableOpacity
           style={{
             backgroundColor: "#6898ab",
             padding: 10,
             borderRadius: 28,
           }}
+          onPress={handleGoToChoosyourCoach}
         >
-          <Button
-            title=" Continue"
-            color="white"
-            onPress={handleGoToChoosyourCoach}
-          />
-        </View>
-      </View>
+          <Text style={{ color: "white", fontSize: 20 }}>Continue</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

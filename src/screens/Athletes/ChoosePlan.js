@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { StyleSheet, Text, View } from "react-native";
-import { fetchAllCoaches } from "../../api/auth";
+
 import { useNavigation } from "@react-navigation/native";
 import { Button, Image } from "react-native-elements";
 import { BASE_URL } from "../../api";
+import { fetchAllCoaches } from "../../api/CoachApi/CoachApi";
 
 const ChoosePlan = () => {
   const Navigation = useNavigation();

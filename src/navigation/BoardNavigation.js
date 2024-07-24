@@ -6,6 +6,9 @@ import LoginAthlete from "../screens/LoginAthlete";
 import LoginCoach from "../screens/LoginCoach";
 
 import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
+import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
+import Support from "../screens/Coaches/CoachProfile/Support";
+import AboutUs from "../screens/Coaches/CoachProfile/AboutUs";
 import CreateAccount from "../screens/Athletes/CreateAccount";
 import ChoosePlan from "../screens/Athletes/ChoosePlan";
 
@@ -19,9 +22,9 @@ const BoardNavigation = () => {
       }}
     >
       <stack.Screen name="board" component={Board} />
+
       <stack.Screen name="loginCoach" component={LoginCoach} />
       <stack.Screen name="loginAthlete" component={LoginAthlete} />
-      <stack.Screen name="choosePlayer" component={ChoosePlayer} />
       <stack.Screen name="CreateAccount" component={CreateAccount} />
       <stack.Screen name="ChooseyourCoach" component={ChoosePlan} />
     </stack.Navigator>

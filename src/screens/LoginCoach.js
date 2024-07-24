@@ -32,7 +32,6 @@ const LoginCoach = () => {
     mutationFn: () => loginCoach(coachInfo),
     onSuccess: () => {
       setCoach(true);
-      storeToken(data.token);
       navigation.navigate("choosePlayer");
 
       Toast.success("Login successful!");
@@ -75,7 +74,6 @@ const LoginCoach = () => {
         value={coachInfo.email}
         onChangeText={(value) => handleChange("email", value)}
         keyboardType="email-address"
-        placeholder="Enter your email"
         placeholderTextColor="grey"
       />
       {/* Password Input */}
@@ -85,20 +83,19 @@ const LoginCoach = () => {
         value={coachInfo.password}
         onChangeText={(value) => handleChange("password", value)}
         secureTextEntry={true}
-        placeholder="Enter your password"
         placeholderTextColor="grey"
       />
       <TouchableOpacity style={styles.loginButton} onPress={handleFormSubmit}>
         <Text style={{ color: "white", fontWeight: "bold" }}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.forgotPasswordButton}
         onPress={() => navigation.navigate("forgotpass")}
       >
         <Text style={{ color: "white", fontSize: 12 }}>
           I don't remember my password
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

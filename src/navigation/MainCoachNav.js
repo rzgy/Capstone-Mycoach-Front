@@ -4,18 +4,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
 import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
 import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
+import CoachStackNav from "./CoachNav/CoachStackNav";
 
-const MainCoachNav = createBottomTabNavigator();
-
-function MyTabs() {
+const Tab = createBottomTabNavigator();
+const MainCoachNav = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="choosePlayer" component={ChoosePlayer} />
-      <Tab.Screen name="playerEdit" component={Playeredit} />
-      <Tab.Screen name="coachProfile" component={CoachProfile} />
+      <Tab.Screen name="playeredit" component={Playeredit} />
+
+      <Tab.Screen name="coachStack" component={CoachStackNav} />
     </Tab.Navigator>
   );
-}
+};
 
 export default MainCoachNav;
 

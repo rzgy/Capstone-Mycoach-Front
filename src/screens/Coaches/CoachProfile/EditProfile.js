@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const forgotpass = () => {
+const EditProfile = () => {
   return (
     <View>
-      <Text>forgotpass</Text>
+      <Text>EditProfile</Text>
     </View>
   );
 };
 
-export default forgotpass;
+export default EditProfile;
 
 const styles = StyleSheet.create({});
