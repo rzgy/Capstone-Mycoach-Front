@@ -60,10 +60,6 @@ const CreateAccount = () => {
     setShowPassword(!showPassword);
   };
   return (
-<<<<<<< HEAD
-    <View>
-      <Text>CreateAccount</Text>
-=======
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.backButton}
@@ -182,7 +178,6 @@ const CreateAccount = () => {
           <Text style={{ color: "white", fontWeight: "bold" }}>Register</Text>
         </TouchableOpacity>
       </ScrollView>
->>>>>>> origin/main
     </View>
   );
 };

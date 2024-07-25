@@ -25,7 +25,7 @@ const registerCoach = async (coachInfo) => {
 const loginUser = async (userInfo) => {
   const { data } = await instance.post("/users/login", userInfo);
 
-  storeToken(data.token);
+  storeToken(data.tokren);
   return data;
 };
 
@@ -37,9 +37,4 @@ const registerUser = async (userInfo) => {
   storeToken(data.token);
   return data;
 };
-<<<<<<< HEAD
-
-export { loginCoach, register, UserRegister };
-=======
 export { loginCoach, registerCoach, loginUser, registerUser };
->>>>>>> origin/main
