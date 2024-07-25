@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const CoachContext = createContext();
+const UserContext = createContext();
 
-export default CoachContext;
+export default UserContext;
