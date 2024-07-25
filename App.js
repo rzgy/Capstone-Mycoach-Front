@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import BoardNavigation from "./src/navigation/BoardNavigation";
 import MainCoachNav from "./src/navigation/MainCoachNav";
-import CoachContext from "./src/Context/UserContext";
+import CoachContext from "./src/Context/CoachContext";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getToken, removeToken } from "./src/api/storage";

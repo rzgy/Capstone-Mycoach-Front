@@ -12,21 +12,8 @@ const ChoosePlayer = () => {
         justifyContent: "center",
       }}
     >
-      <View
-        style={{
-          position: "absolute",
-          top: 50,
-          left: 20,
-          backgroundColor: "#101518",
-          borderRadius: 100,
-          width: 40,
-          height: 40,
-        }}
-      >
-        <Button title="<" color={"black"} onPress={() => navigation.goBack()} />
-      </View>
       <Text style={{ color: "white", fontSize: 32, fontWeight: "bold" }}>
-        Hi Ali
+        Choose Athlete
       </Text>
     </View>
   );

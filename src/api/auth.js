@@ -11,7 +11,7 @@ const loginCoach = async (coachInfo) => {
   return data;
 };
 
-const register = async (coachInfo) => {
+const registerCoach = async (coachInfo) => {
   const formData = new FormData();
   for (const key in coachInfo) formData.append(key, coachInfo[key]);
 
@@ -20,4 +20,21 @@ const register = async (coachInfo) => {
   return data;
 };
 
-export { loginCoach, register };
+// User Api
+
+const loginUser = async (userInfo) => {
+  const { data } = await instance.post("/users/login", userInfo);
+
+  storeToken(data.token);
+  return data;
+};
+
+const registerUser = async (userInfo) => {
+  const formData = new FormData();
+  for (const key in userInfo) formData.append(key, userInfo[key]);
+
+  const { data } = await instance.post("/users/register", formData);
+  storeToken(data.token);
+  return data;
+};
+export { loginCoach, registerCoach, loginUser, registerUser };
