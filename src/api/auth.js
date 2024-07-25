@@ -25,7 +25,7 @@ const registerCoach = async (coachInfo) => {
 const loginUser = async (userInfo) => {
   const { data } = await instance.post("/users/login", userInfo);
 
-  storeToken(data.token);
+  storeToken(data.tokren);
   return data;
 };
 
