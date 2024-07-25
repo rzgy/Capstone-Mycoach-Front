@@ -20,7 +20,7 @@ const OnBoardingSlide = () => {
       style={{
         flex: 1,
         width: "100%",
-        paddingTop: 60,
+        paddingTop: 20,
         paddingHorizontal: 10,
         backgroundColor: "#182026",
       }}
