@@ -9,7 +9,7 @@ const Board = () => {
     Navigation.navigate("loginCoach");
   };
   const handleGoToLoginAthlete = () => {
-    Navigation.navigate("loginAthlete");
+    Navigation.navigate("choosePlan");
   };
   return (
     <View

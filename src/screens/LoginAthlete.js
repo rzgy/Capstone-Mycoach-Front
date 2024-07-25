@@ -31,8 +31,8 @@ const LoginAthlete = () => {
     mutationKey: ["Login"],
     mutationFn: () => loginUser(userInfo),
     onSuccess: (data) => {
-      setUser(data);
-      navigation.navigate("choosePlan");
+      setUser(true);
+      navigation.navigate("excersises");
       Toast.success("Login successful!");
       setIsLoading(false);
     },
@@ -50,9 +50,6 @@ const LoginAthlete = () => {
     setIsLoading(true);
     mutate();
   };
-  if (user) {
-    return navigation.navigate("choosePlan");
-  }
 
   return (
     <View style={styles.container}>
