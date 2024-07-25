@@ -27,7 +27,7 @@ const ChooseCoach = () => {
   const navigation = useNavigation();
   const handleGoToCreateAccount = () => {
     setShoeModal(false);
-    navigation.navigate("CreateAccount");
+    navigation.navigate("loginAthlete");
   };
 
   return (

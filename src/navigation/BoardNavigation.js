@@ -7,7 +7,7 @@ import LoginCoach from "../screens/LoginCoach";
 
 import CreateAccount from "../screens/Athletes/CreateAccount";
 import ChoosePlan from "../screens/Athletes/ChoosePlan";
-
+import OnBoardingSlide from "../screens/Athletes/OnBoardingSlide";
 const stack = createStackNavigator();
 const BoardNavigation = () => {
   return (
@@ -22,6 +22,7 @@ const BoardNavigation = () => {
       <stack.Screen name="loginCoach" component={LoginCoach} />
       <stack.Screen name="loginAthlete" component={LoginAthlete} />
       <stack.Screen name="CreateAccount" component={CreateAccount} />
+      <stack.Screen name="OnBoardingSlide" component={OnBoardingSlide} />
       <stack.Screen name="ChooseyourCoach" component={ChoosePlan} />
     </stack.Navigator>
   );
