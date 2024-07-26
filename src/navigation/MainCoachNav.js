@@ -3,11 +3,10 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
 import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
-import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
+
 import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
-import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
 
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {

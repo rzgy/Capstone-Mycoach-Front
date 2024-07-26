@@ -28,6 +28,7 @@
     "react-native-gesture-handler": "~2.16.1",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-picker-select": "^9.1.3",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^10.1.0",
     "toastify-react-native": "^5.0.0"
   },
