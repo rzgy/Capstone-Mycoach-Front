@@ -1,28 +1,38 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import PictureLogo from "../../../../assets/3.png";
+import CEO from "../../../../assets/MyCoachCEO.png";
 const AboutUs = () => {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
         <View style={styles.header}>
           <Text style={styles.title}>About Us</Text>
         </View>
         <View style={styles.content}>
           <Image
-            source={(require = "../../assets/3.png")}
-            style={{
-              width: 200,
-              height: 200,
-              paddingBottom: 20,
-              marginBottom: 30,
-            }}
+            source={PictureLogo} // Placeholder CEO Picture
+            style={styles.logo}
           />
-        </View>
-        <View style={styles.content}>
           <Text style={styles.subtitle}>MyCoach</Text>
-
           <Text style={styles.text}>
             MyCoach is an innovative fitness app that redefines the gym
             experience by connecting users directly with personal trainers. It
@@ -35,6 +45,30 @@ const AboutUs = () => {
             expert support.
           </Text>
           <Text style={styles.sectionTitle}>Your Chefs</Text>
+          <View style={styles.chefContainer}>
+            <Image
+              source={CEO} // Placeholder CEO Picture
+              style={styles.chefImage}
+            />
+            <Text style={styles.chefName}>Abdulrazak Alqallaf</Text>
+            <Text style={styles.chefTitle}>Founder and CEO</Text>
+          </View>
+          <View style={styles.chefContainer}>
+            <Image
+              source={{ uri: "https://via.placeholder.com/100" }} // Placeholder CEO Picture
+              style={styles.chefImage}
+            />
+            <Text style={styles.chefName}>Soud Alenezi</Text>
+            <Text style={styles.chefTitle}>Co-Founder and SFO</Text>
+          </View>
+          <View style={styles.chefContainer}>
+            <Image
+              source={{ uri: "https://via.placeholder.com/100" }} // Placeholder CEO Picture
+              style={styles.chefImage}
+            />
+            <Text style={styles.chefName}>Aladdin Enbeh</Text>
+            <Text style={styles.chefTitle}>Co-Founder and COO</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -44,12 +78,15 @@ const AboutUs = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#121212",
+    backgroundColor: "#182026",
   },
   container: {
     flex: 1,
-    backgroundColor: "#121212",
+    backgroundColor: "#182026",
     padding: 20,
+  },
+  backButton: {
+    marginBottom: 20,
   },
   header: {
     alignItems: "center",
@@ -61,20 +98,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    marginTop: 20,
-    marginBottom: 10,
+    width: 150,
+    height: 150,
     alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 2,
-    width: 100,
-    height: 100,
-    backgroundColor: "white",
-    resizeMode: "contain",
+    marginBottom: 30,
   },
   content: {
     marginTop: 20,
-    flex: 1,
   },
   subtitle: {
     color: "#FFFFFF",
@@ -94,11 +124,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  chefImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
+  chefContainer: {
+    marginBottom: 20,
+
     borderRadius: 10,
+    padding: 15,
+    alignItems: "center",
+  },
+  chefImage: {
+    width: 180,
+    height: 180,
+    borderRadius: 15,
+    marginBottom: 10,
+  },
+  chefName: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  chefTitle: {
+    color: "#AAAAAA",
+    fontSize: 14,
   },
 });
 
