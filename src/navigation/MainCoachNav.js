@@ -7,8 +7,10 @@ import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
 import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
+import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
+
 const Tab = createBottomTabNavigator();
-const MainCoachNav = () => {
+const MainAthleteNav = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -65,6 +67,6 @@ const MainCoachNav = () => {
   );
 };
 
-export default MainCoachNav;
+export default MainAthleteNav;
 
 const styles = StyleSheet.create({});
