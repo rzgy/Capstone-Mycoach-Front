@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
+import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
+import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
+import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
-
-import CoachStackNav from "../CoachNav/CoachStackNav";
 import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
+
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {
   return (
@@ -22,8 +24,21 @@ const MainAthleteNav = () => {
       }}
     >
       <Tab.Screen
-        name="workoutPlan"
-        component={WorkoutPlan}
+        name="choosePlayer"
+        component={ChoosePlayer}
+        options={{
+          tabBarIcon: ({ color, size, focused }) => (
+            <FontAwesome5
+              name="users"
+              size={24}
+              color={focused ? color : "#FFFFFF"} // Use active tint color when focused, otherwise white
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="playeredit"
+        component={Playeredit}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <FontAwesome6
@@ -36,7 +51,7 @@ const MainAthleteNav = () => {
       />
 
       <Tab.Screen
-        name="athleteStack"
+        name="coachStack"
         component={CoachStackNav}
         options={{
           tabBarIcon: ({ color, size, focused }) => (

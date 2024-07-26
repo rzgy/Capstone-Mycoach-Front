@@ -10,16 +10,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { removeToken } from "../../../api/storage";
-import CoachContext from "../../../Context/UserContext";
+import CoachContext from "../../../Context/CoachContext";
+import UserContext from "../../../Context/UserContext";
 
 const CoachProfile = () => {
   const [coach, setCoach] = useContext(CoachContext);
+  const [user, setUser] = useContext(UserContext);
   const navigation = useNavigation();
   handleAboutUs = () => {
     navigation.navigate("AboutUs");
   };
   handleLogOut = () => {
     setCoach(false);
+    setUser(false);
     removeToken();
   };
   return (
