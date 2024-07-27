@@ -1,93 +1,86 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
-  View,
-  Text,
+  Modal,
   StyleSheet,
+  Text,
+  View,
+  ScrollView,
   TouchableOpacity,
-  Dimensions,
-  FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "react-native-elements";
+import { BASE_URL } from "../../api";
+import { fetchAllCoaches } from "../../api/CoachApi/CoachApi";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
-const { width: screenWidth } = Dimensions.get("window");
+const ChoosePlan = () => {
+  const [showModal, setShowModal] = useState(false);
+  const { data: coaches } = useQuery({
+    queryKey: ["coaches"],
+    queryFn: fetchAllCoaches,
+  });
 
-const slides = [
-  {
-    title: "Gourmet Quality, Hassle-Free",
-    description:
-      "Savor chef-inspired meals without the hassle of cooking or cleaning up, with our gourmet meal delivery service.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
-  },
-  {
-    title: "Delicious and Nutritious Fresh Meals",
-    description:
-      "Enjoy healthy and delicious meals delivered to your doorstep, prepared with fresh, high-quality ingredients.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
-  },
-  {
-    title: "Your Coach can track your improvements here",
-    description:
-      "Create your own customized meal plan from our selection of healthy meal options.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
-  },
-];
-
-const OnBoardingSlide = () => {
-  const [activeSlide, setActiveSlide] = useState(0);
   const navigation = useNavigation();
-  const flatListRef = useRef(null);
-
-  const handleContinue = () => {
-    if (activeSlide === slides.length - 1) {
-      navigation.navigate("ChooseCoach");
-    } else {
-      flatListRef.current.scrollToIndex({ index: activeSlide + 1 });
-    }
+  const handleGoToCreateAccount = () => {
+    setShowModal(false);
+    navigation.navigate("loginAthlete");
   };
-
-  const renderItem = ({ item }) => (
-    <View style={styles.slide}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
-      </TouchableOpacity>
-      <Text style={styles.title}>{item.title}</Text>
-      <Image style={styles.image} source={{ uri: item.image }} />
-      <Text style={styles.description}>{item.description}</Text>
-    </View>
-  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <FlatList
-        ref={flatListRef}
-        data={slides}
-        renderItem={renderItem}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        onScroll={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / screenWidth);
-          setActiveSlide(index);
-        }}
-      />
-      <View style={styles.paginationContainer}>
-        {slides.map((_, index) => (
-          <View
-            key={index}
-            style={[styles.dot, { opacity: activeSlide === index ? 1 : 0.5 }]}
-          />
-        ))}
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Choose your coach</Text>
+
+        <ScrollView contentContainerStyle={styles.coachList}>
+          {/* Modal */}
+          <Modal visible={showModal} transparent={true}>
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Hello!</Text>
+                <Text style={styles.modalText}>
+                  Welcome to My Coach Application
+                </Text>
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    onPress={() => setShowModal(false)}
+                  >
+                    <Text style={styles.modalButtonText}>Close</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    onPress={handleGoToCreateAccount}
+                  >
+                    <Text style={styles.modalButtonText}>Subscribe</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+          {coaches?.map((coach) => (
+            <TouchableOpacity
+              onPress={() => setShowModal(true)}
+              style={styles.coachCard}
+              key={coach._id}
+            >
+              <Image
+                style={styles.coachImage}
+                source={{ uri: `${BASE_URL}/${coach.image}` }}
+              />
+              <Text style={styles.coachName}>{coach.fullname}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-      <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -97,60 +90,84 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#182026",
   },
-  slide: {
-    width: screenWidth,
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 40,
+  container: {
+    flex: 1,
+    padding: 20,
   },
   backButton: {
     alignSelf: "flex-start",
     marginBottom: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
-    color: "white",
     textAlign: "center",
-    marginBottom: 20,
-  },
-  image: {
-    width: 300,
-    height: 300,
-    marginBottom: 20,
-  },
-  description: {
-    fontSize: 18,
     color: "white",
-    textAlign: "center",
     marginBottom: 20,
   },
-  paginationContainer: {
+  coachList: {
     flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingBottom: 20,
+  },
+  coachCard: {
+    width: "45%",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  coachImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    overflow: "hidden",
+  },
+  coachName: {
+    color: "white",
+    textAlign: "center",
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+  modalContent: {
+    width: "80%",
     backgroundColor: "white",
-    marginHorizontal: 5,
-  },
-  continueButton: {
-    backgroundColor: "#6898ab",
-    padding: 15,
-    borderRadius: 28,
-    marginBottom: 40,
-    marginHorizontal: 20,
+    borderRadius: 20,
+    padding: 30,
     alignItems: "center",
   },
-  continueButtonText: {
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  modalButton: {
+    backgroundColor: "#6898ab",
+    padding: 10,
+    borderRadius: 28,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  modalButtonText: {
     color: "white",
-    fontSize: 20,
     fontWeight: "bold",
   },
 });
 
-export default OnBoardingSlide;
+export default ChoosePlan;
