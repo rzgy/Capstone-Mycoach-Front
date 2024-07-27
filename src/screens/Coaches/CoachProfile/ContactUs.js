@@ -33,7 +33,7 @@ const ContactUs = () => {
         <Text style={styles.label}>WhatsApp</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => openLink("https://wa.me/0096599239504")}
+          onPress={() => openLink("https://wa.me/0096599504")}
         >
           <Text style={styles.buttonText}>Chat on WhatsApp</Text>
         </TouchableOpacity>
