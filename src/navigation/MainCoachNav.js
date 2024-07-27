@@ -3,11 +3,9 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
 import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
-import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
 import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
-import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
 
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {
@@ -16,11 +14,26 @@ const MainAthleteNav = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarBackgroundColor: "#182026",
-        tabBarActiveBackgroundColor: "#182026",
+
         tabBarActiveTintColor: "#6898ab",
-        tabBarInactiveBackgroundColor: "#182026",
-        tabBarStyle: { backgroundColor: "#182026", borderTopWidth: 0 },
+
+        tabBarStyle: {
+          backgroundColor: "#101518",
+          position: "absolute",
+
+          borderTopWidth: 0,
+
+          bottom: 30,
+          left: 20,
+          right: 20,
+          elevation: 0,
+          height: "9%",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "90%",
+          padding: 25,
+          borderRadius: 40,
+        },
       }}
     >
       <Tab.Screen

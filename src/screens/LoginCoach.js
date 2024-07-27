@@ -32,7 +32,6 @@ const LoginCoach = () => {
     mutationFn: () => loginCoach(coachInfo),
     onSuccess: () => {
       setCoach(true);
-      navigation.navigate("choosePlayer");
 
       Toast.success("Login successful!");
       setIsLoading(false);
@@ -88,6 +87,7 @@ const LoginCoach = () => {
       <TouchableOpacity style={styles.loginButton} onPress={handleFormSubmit}>
         <Text style={{ color: "white", fontWeight: "bold" }}>Login</Text>
       </TouchableOpacity>
+
       {/* <TouchableOpacity
         style={styles.forgotPasswordButton}
         onPress={() => navigation.navigate("forgotpass")}

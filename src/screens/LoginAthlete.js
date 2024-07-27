@@ -32,7 +32,7 @@ const LoginAthlete = () => {
     mutationFn: () => loginUser(userInfo),
     onSuccess: (data) => {
       setUser(true);
-      navigation.navigate("excersises");
+
       Toast.success("Login successful!");
       setIsLoading(false);
     },
