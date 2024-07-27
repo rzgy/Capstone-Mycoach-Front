@@ -14,11 +14,25 @@ const MainAthleteNav = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarBackgroundColor: "#182026",
-        tabBarActiveBackgroundColor: "#182026",
+
         tabBarActiveTintColor: "#6898ab",
-        tabBarInactiveBackgroundColor: "#182026",
-        tabBarStyle: { backgroundColor: "#182026", borderTopWidth: 0 },
+        tabBarStyle: {
+          backgroundColor: "#101518",
+          position: "absolute",
+
+          borderTopWidth: 0,
+
+          bottom: 30,
+          left: 20,
+          right: 20,
+          elevation: 0,
+          height: "9%",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "90%",
+          padding: 25,
+          borderRadius: 40,
+        },
       }}
     >
       <Tab.Screen
