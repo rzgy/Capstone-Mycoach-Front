@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import firstImage from "../../../assets/PT1.png";
 import scondImage from "../../../assets/PT2.png";
 import thirdImage from "../../../assets/PT3.png";
+import { LinearGradient } from "expo-linear-gradient";
 const { width: screenWidth } = Dimensions.get("window");
 
 const slides = [
@@ -87,8 +88,21 @@ const OnBoardingSlide = () => {
           />
         ))}
       </View>
-      <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-        <Text style={styles.continueButtonText}>Continue</Text>
+      <TouchableOpacity onPress={handleContinue}>
+        <LinearGradient
+          colors={["#60C3FF", "#407BFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            padding: 15,
+            borderRadius: 28,
+            marginBottom: 40,
+            marginHorizontal: 20,
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.continueButtonText}>Continue</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -101,7 +115,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 40,
+    top: 50,
     left: 20,
     zIndex: 1,
   },
@@ -143,14 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginHorizontal: 5,
   },
-  continueButton: {
-    backgroundColor: "#6898ab",
-    padding: 15,
-    borderRadius: 28,
-    marginBottom: 40,
-    marginHorizontal: 20,
-    alignItems: "center",
-  },
+
   continueButtonText: {
     color: "white",
     fontSize: 20,

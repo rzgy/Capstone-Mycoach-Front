@@ -69,7 +69,7 @@ const ChatApp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#6898ab",
+    backgroundColor: "#407BFF",
   },
 });
 
