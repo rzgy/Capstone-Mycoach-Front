@@ -11,27 +11,29 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
-
+import firstImage from "../../../assets/PT1.png";
+import scondImage from "../../../assets/PT2.png";
+import thirdImage from "../../../assets/PT3.png";
 const { width: screenWidth } = Dimensions.get("window");
 
 const slides = [
   {
-    title: "Gourmet Quality, Hassle-Free",
+    title: "From Beginner to Pro",
     description:
-      "Savor chef-inspired meals without the hassle of cooking or cleaning up, with our gourmet meal delivery service.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      " Introducing the My Coach, the ideal solution to track your workouts and achieve your fitness goals effortlessly and effectively.",
+    image: firstImage, // Replace with your provided image URL
   },
   {
-    title: "Delicious and Nutritious Fresh Meals",
+    title: "Your Perfect Companion \n for an Active Lifestyle",
     description:
-      "Enjoy healthy and delicious meals delivered to your doorstep, prepared with fresh, high-quality ingredients.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      "Our app features a simple and elegant \n user interface, allowing you to monitor your daily workouts, record your progress,\n and receive personalized advice \n from top-notch fitness coaches.",
+    image: scondImage, // Replace with your provided image URL
   },
   {
-    title: "Your Coach can track your improvements here",
+    title: "Your Health Journey \n Begins Here ",
     description:
-      "Create your own customized meal plan from our selection of healthy meal options.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      "Start your fitness journey today with the My Coach and enjoy reaching your health and fitness goals in an innovative and efficient way.",
+    image: thirdImage, // Replace with your provided image URL
   },
 ];
 
@@ -51,7 +53,7 @@ const OnBoardingSlide = () => {
   const renderItem = ({ item }) => (
     <View style={styles.slide}>
       <Text style={styles.title}>{item.title}</Text>
-      <Image style={styles.image} source={{ uri: item.image }} />
+      <Image style={styles.image} source={item.image} />
       <Text style={styles.description}>{item.description}</Text>
     </View>
   );
@@ -118,8 +120,8 @@ const styles = StyleSheet.create({
     marginTop: 40, // Added marginTop to move title lower
   },
   image: {
-    width: 300,
-    height: 300,
+    width: 400,
+    height: 400,
     marginBottom: 20,
   },
   description: {
