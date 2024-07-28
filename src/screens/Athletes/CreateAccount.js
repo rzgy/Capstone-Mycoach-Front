@@ -16,7 +16,9 @@ import { registerUser } from "../../api/auth";
 import { ScrollView } from "react-native-gesture-handler";
 import Checkbox from "expo-checkbox";
 import { Feather } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import ModalDropdown from "react-native-modal-dropdown";
+import { ImagePickerIOS } from "react-native";
 const CreateAccount = () => {
   const navigation = useNavigation();
 
@@ -27,6 +29,7 @@ const CreateAccount = () => {
     gender: "",
     height: "",
     age: "",
+    image: null,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +40,7 @@ const CreateAccount = () => {
     onSuccess: () => {
       Toast.success("Registration successful!");
       setIsLoading(false);
-      navigation.navigate("LoginAthlete");
+      navigation.navigate("loginAthlete");
     },
     onError: (e) => {
       console.log(e);
@@ -46,14 +49,28 @@ const CreateAccount = () => {
     },
   });
 
-  const handleChange = (name, value) => {
-    setUserInfo((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleFormSubmit = () => {
     setIsLoading(true);
     console.log(userInfo);
     mutate();
+  };
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setUserInfo(result.assets[0].uri);
+    }
+  };
+  const handleChange = (name, value) => {
+    setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   const togglePasswordVisibility = () => {
@@ -170,6 +187,38 @@ const CreateAccount = () => {
           keyboardType="numeric"
           placeholderTextColor="grey"
         />
+
+        {/* Profile Picture Input */}
+        <Text style={styles.inputLabel}>Profile Picture</Text>
+        <TouchableOpacity style={styles.input} onPress={pickImage}>
+          <Text
+            style={{
+              color: "#276285",
+              fontWeight: "bold",
+              fontSize: 12,
+              textAlign: "center",
+              padding: 5,
+
+              borderRadius: 10,
+            }}
+          >
+            Choose Image
+          </Text>
+        </TouchableOpacity>
+
+        {/* Display the selected image */}
+
+        {userInfo.image && (
+          <Image
+            source={{ uri: userInfo.image }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              marginBottom: 20,
+            }}
+          />
+        )}
 
         <TouchableOpacity
           style={styles.registerButton}

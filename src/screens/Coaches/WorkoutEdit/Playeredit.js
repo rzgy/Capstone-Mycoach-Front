@@ -8,17 +8,50 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
+import { BASE_URL } from "../../../api";
+import {
+  fetchAllUsers,
+  fetchOneUser,
+  fetchOneUserById,
+} from "../../../api/UserApi/UserApi";
 
 const Playeredit = () => {
+  const route = useRoute();
+  const _id = route.params?._id;
+
   const [exercises, setExercises] = useState([
     { id: 1, name: "", sets: "" },
     // Add more exercises as needed
   ]);
-  const [days, setDays] = useState(["Day 1"]);
+
+  const { data } = useQuery({
+    queryKey: ["my Athletes", _id],
+    queryFn: () => fetchAllUsers(),
+    enabled: !_id,
+  });
+
+  const { data: player } = useQuery({
+    queryKey: ["my Athletes", _id],
+    queryFn: () => fetchOneUserById(_id),
+    enabled: !!_id,
+  });
+
+  const [days, setDays] = useState([
+    "Day 1",
+    "Day 2",
+    "Day 3",
+    "Day 4",
+    "Day 5",
+    "Day 6",
+    "Day 7",
+  ]);
   const [editMode, setEditMode] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseSets, setNewExerciseSets] = useState("");
@@ -70,7 +103,49 @@ const Playeredit = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Text style={styles.pageTitle}>Workout edit</Text>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{
+          paddingBottom: 70,
+        }}
+      >
+        <View
+          style={{ backgroundColor: "white", padding: 10, borderRadius: 22 }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 20,
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{
+                uri: BASE_URL + "/" + (_id ? player?.image : data?.[0]?.image),
+              }}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+              }}
+            />
+            <Text style={{ color: "black" }}>
+              {_id ? player?.fullname : data?.[0].fullname}
+            </Text>
+
+            <TouchableOpacity
+              style={[styles.editButton, { marginLeft: "auto" }]}
+              onPress={toggleEditMode}
+            >
+              <Text style={styles.editButtonText}>
+                {editMode ? "Save" : "Edit"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {Array.from({ length: 1 }, (_, i) => (
           <View key={`week-${i + 1}`} style={styles.weekContainer}>
             <View style={styles.weekHeader}>
@@ -85,6 +160,8 @@ const Playeredit = () => {
                   <View style={styles.tableHeader}>
                     <Text style={styles.tableHeaderText}>Exercise name</Text>
                     <Text style={styles.tableHeaderText}>Sets needed</Text>
+                    <Text style={styles.tableHeaderText}>Weight Played</Text>
+                    <Text style={styles.tableHeaderText}>Reps played</Text>
                     {/* Additional headers */}
                   </View>
                   {exercises.map((exercise) => (
@@ -96,6 +173,18 @@ const Playeredit = () => {
                             value={exercise.name}
                             onChangeText={(value) =>
                               updateExercise(exercise.id, "name", value)
+                            }
+                          />
+                          <TextInput
+                            style={styles.tableRowText}
+                            value={`${exercise.sets}`}
+                            keyboardType="numeric"
+                            onChangeText={(value) =>
+                              updateExercise(
+                                exercise.id,
+                                "sets",
+                                parseInt(value, 10)
+                              )
                             }
                           />
                           <TextInput
@@ -138,9 +227,7 @@ const Playeredit = () => {
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.editButton} onPress={toggleEditMode}>
-        <Text style={styles.editButtonText}>{editMode ? "Save" : "Edit"}</Text>
-      </TouchableOpacity>
+
       {editMode && (
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -279,9 +366,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   editButton: {
-    position: "absolute",
-    bottom: 700,
-    right: 20,
     backgroundColor: "#6898ab",
     padding: 10,
     borderRadius: 5,

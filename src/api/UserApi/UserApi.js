@@ -1,4 +1,5 @@
 import instance from "../index";
+import * as SecureStore from "expo-secure-store";
 
 const fetchAllUsers = async () => {
   console.log("resresresrser");
@@ -11,15 +12,43 @@ const fetchAllUsers = async () => {
     throw error;
   }
 };
-
 const fetchOneUser = async () => {
-  const token = localStorage.getItem("token");
-  const { data } = await instance.get("/users/myprofile", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return data;
+  try {
+    const token = await SecureStore.getItemAsync("token");
+    if (!token) {
+      throw new Error("Token not found");
+    }
+
+    const response = await instance.get("/users/myprofile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching athlete data:", error);
+    throw error; // Rethrow the error if you want to handle it in the component
+  }
+};
+const fetchOneUserById = async (_id) => {
+  try {
+    const token = await SecureStore.getItemAsync("token");
+    if (!token) {
+      throw new Error("Token not found");
+    }
+
+    const response = await instance.get(`/users/${_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching athlete data:", error);
+    throw error; // Rethrow the error if you want to handle it in the component
+  }
 };
 
 const deleteUsers = async (userId) => {
@@ -44,4 +73,10 @@ const updateUser = async (userInfo) => {
   return data;
 };
 
-export { fetchAllUsers, fetchOneUser, deleteUsers, updateUser };
+export {
+  fetchAllUsers,
+  fetchOneUser,
+  deleteUsers,
+  updateUser,
+  fetchOneUserById,
+};

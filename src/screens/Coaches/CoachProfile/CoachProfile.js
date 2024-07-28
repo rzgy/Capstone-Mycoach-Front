@@ -12,6 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 import { removeToken } from "../../../api/storage";
 import CoachContext from "../../../Context/CoachContext";
 import UserContext from "../../../Context/UserContext";
+import { fetchAllCoaches, fetchOneCoach } from "../../../api/CoachApi/CoachApi";
+import { useQuery } from "@tanstack/react-query";
 
 const CoachProfile = () => {
   const [coach, setCoach] = useContext(CoachContext);
@@ -25,14 +27,39 @@ const CoachProfile = () => {
     setUser(false);
     removeToken();
   };
+
+  const {
+    data: coaches,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["coach"],
+    queryFn: fetchOneCoach,
+  });
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.greeting}></Text>
-          <Text style={styles.displayName}>Soud alenezi</Text>
+          {coaches && Array.isArray(coaches.coachesList) ? (
+            coaches.coachesList.map((coach, index) => (
+              <Text key={index} style={styles.displayName}>
+                {coach.fullname}
+              </Text>
+            ))
+          ) : (
+            <Text style={styles.displayName}>
+              Coaches data is not available or not an array.
+            </Text>
+          )}
         </View>
-
         <View style={styles.menu}>
           <MenuItem
             icon="person-outline"

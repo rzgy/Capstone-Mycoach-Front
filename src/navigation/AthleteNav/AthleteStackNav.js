@@ -6,6 +6,7 @@ import Support from "../../screens/Coaches/CoachProfile/Support";
 import EditProfile from "../../screens/Coaches/CoachProfile/EditProfile";
 import ContactUs from "../../screens/Coaches/CoachProfile/ContactUs";
 import { createStackNavigator } from "@react-navigation/stack";
+import Profile from "../../screens/Athletes/profile/profile";
 
 const AthleteStackNav = () => {
   const stack = createStackNavigator();
@@ -15,7 +16,7 @@ const AthleteStackNav = () => {
         headerShown: false,
       }}
     >
-      <stack.Screen name="coachProfile" component={CoachProfile} />
+      <stack.Screen name="Profile" component={Profile} />
       <stack.Screen name="AboutUs" component={AboutUs} />
       <stack.Screen name="support" component={Support} />
       <stack.Screen name="EditProfile" component={EditProfile} />

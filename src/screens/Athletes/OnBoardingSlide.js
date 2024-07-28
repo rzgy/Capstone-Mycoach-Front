@@ -42,7 +42,7 @@ const OnBoardingSlide = () => {
 
   const handleContinue = () => {
     if (activeSlide === slides.length - 1) {
-      navigation.navigate("ChooseCoach");
+      navigation.navigate("ChooseyourCoach");
     } else {
       flatListRef.current.scrollToIndex({ index: activeSlide + 1 });
     }

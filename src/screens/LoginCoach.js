@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import ToastManager, { Toast } from "toastify-react-native";
 import { loginCoach } from "../api/auth";
 import CoachContext from "../Context/CoachContext";
+
 // ..
 const LoginCoach = () => {
   const navigation = useNavigation();
@@ -84,6 +85,7 @@ const LoginCoach = () => {
         secureTextEntry={true}
         placeholderTextColor="grey"
       />
+
       <TouchableOpacity style={styles.loginButton} onPress={handleFormSubmit}>
         <Text style={{ color: "white", fontWeight: "bold" }}>Login</Text>
       </TouchableOpacity>
