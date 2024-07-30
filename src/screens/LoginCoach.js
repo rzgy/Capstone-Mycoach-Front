@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import ToastManager, { Toast } from "toastify-react-native";
 import { loginCoach } from "../api/auth";
 import CoachContext from "../Context/CoachContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 // ..
 const LoginCoach = () => {
@@ -86,18 +87,34 @@ const LoginCoach = () => {
         placeholderTextColor="grey"
       />
 
-      <TouchableOpacity style={styles.loginButton} onPress={handleFormSubmit}>
-        <Text style={{ color: "white", fontWeight: "bold" }}>Login</Text>
+      <TouchableOpacity
+        title="Login"
+        color="white"
+        onPress={handleFormSubmit}
+        width="100%"
+      >
+        <LinearGradient
+          colors={["#60C3FF", "#407BFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            alignItems: "center",
+            padding: 12,
+            borderRadius: 28,
+            marginBottom: 20,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>Login</Text>
+        </LinearGradient>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.forgotPasswordButton}
-        onPress={() => navigation.navigate("forgotpass")}
+        onPress={() => navigation.navigate("contactUs")}
       >
         <Text style={{ color: "white", fontSize: 12 }}>
-          I don't remember my password
+          you want to be a Coach? contact us
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

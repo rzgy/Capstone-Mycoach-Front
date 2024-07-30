@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Button } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Board = () => {
   const Navigation = useNavigation();
@@ -48,7 +49,7 @@ const Board = () => {
         >
           My
           <Text
-            style={{ color: "#6898ab", fontSize: 32, fontFamily: "primary" }}
+            style={{ color: "#507BFF", fontSize: 32, fontFamily: "primary" }}
           >
             Coach
           </Text>
@@ -57,38 +58,48 @@ const Board = () => {
       <View
         style={{
           marginTop: 110,
-          backgroundColor: "#6898ab",
-          padding: 10,
-          borderRadius: 28,
           width: "80%",
-          alignItems: "center",
         }}
         accessibilityRole="button"
       >
-        <Button
-          title="Athlete"
-          color="white"
-          width="100%"
-          onPress={handleGoToLoginAthlete}
-        />
+        <LinearGradient
+          colors={["#60C3FF", "#407BFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            alignItems: "center",
+            padding: 10,
+            borderRadius: 28,
+          }}
+        >
+          <Button
+            title="Athlete"
+            color="white"
+            width="100%"
+            onPress={handleGoToLoginAthlete}
+          />
+        </LinearGradient>
       </View>
       <View
         style={{
           marginTop: 20,
-          backgroundColor: "#6898ab",
-          padding: 10,
-          borderRadius: 28,
           width: "80%",
-          alignItems: "center",
         }}
         accessibilityRole="button"
       >
-        <Button
-          title="Coach"
-          color="white"
-          onPress={handleGoToLoginCoach}
-          width="100%"
-        />
+        <LinearGradient
+          colors={["#60C3FF", "#407BFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{ alignItems: "center", padding: 10, borderRadius: 28 }}
+        >
+          <Button
+            title="Coach"
+            color="white"
+            onPress={handleGoToLoginCoach}
+            width="100%"
+          />
+        </LinearGradient>
       </View>
     </View>
   );
