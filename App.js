@@ -10,11 +10,13 @@ import { getName, getToken, removeToken } from "./src/api/storage";
 import CoachStackNav from "./src/navigation/CoachNav/CoachStackNav";
 import UserContext from "./src/Context/UserContext";
 import MainAthleteNav from "./src/navigation/AthleteNav/MainAthleteNav";
+import SelectedPlayerContext from "./src/Context/SelectedPlayerContext";
 
 const queryClient = new QueryClient();
 export default function App() {
   const [coach, setCoach] = useState(false);
   const [user, setUser] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState(false);
 
   const checkToken = async () => {
     const token = await getToken();
@@ -37,21 +39,25 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CoachContext.Provider value={[coach, setCoach]}>
-        <UserContext.Provider value={[user, setUser]}>
-          <View style={styles.container}>
-            <NavigationContainer>
-              {coach ? (
-                <MainCoachNav />
-              ) : user ? (
-                <MainAthleteNav />
-              ) : (
-                <BoardNavigation />
-              )}
-            </NavigationContainer>
-          </View>
-        </UserContext.Provider>
-      </CoachContext.Provider>
+      <SelectedPlayerContext.Provider
+        value={[selectedPlayer, setSelectedPlayer]}
+      >
+        <CoachContext.Provider value={[coach, setCoach]}>
+          <UserContext.Provider value={[user, setUser]}>
+            <View style={styles.container}>
+              <NavigationContainer>
+                {coach ? (
+                  <MainCoachNav />
+                ) : user ? (
+                  <MainAthleteNav />
+                ) : (
+                  <BoardNavigation />
+                )}
+              </NavigationContainer>
+            </View>
+          </UserContext.Provider>
+        </CoachContext.Provider>
+      </SelectedPlayerContext.Provider>
     </QueryClientProvider>
   );
 }

@@ -43,7 +43,6 @@ const CreateAccount = () => {
       navigation.navigate("loginAthlete");
     },
     onError: (e) => {
-      console.log(e);
       Toast.error("Registration failed. Please try again.");
       setIsLoading(false);
     },
@@ -51,7 +50,7 @@ const CreateAccount = () => {
 
   const handleFormSubmit = () => {
     setIsLoading(true);
-    console.log(userInfo);
+
     mutate();
   };
   const pickImage = async () => {
@@ -62,8 +61,6 @@ const CreateAccount = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setUserInfo(result.assets[0].uri);

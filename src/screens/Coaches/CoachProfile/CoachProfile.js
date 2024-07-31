@@ -36,7 +36,6 @@ const CoachProfile = () => {
     queryKey: ["coach"],
     queryFn: me,
   });
-  console.log(data);
 
   return (
     <SafeAreaView style={styles.safeArea}>

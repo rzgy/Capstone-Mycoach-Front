@@ -6,6 +6,7 @@ import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
 import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
+import WorkoutStack from "./WorkoutStack";
 
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {
@@ -51,7 +52,7 @@ const MainAthleteNav = () => {
       />
       <Tab.Screen
         name="playeredit"
-        component={Playeredit}
+        component={WorkoutStack}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <FontAwesome6

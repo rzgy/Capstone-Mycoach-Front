@@ -2,10 +2,8 @@ import instance from "../index";
 import * as SecureStore from "expo-secure-store";
 
 const fetchAllUsers = async () => {
-  console.log("resresresrser");
   try {
     const { data } = await instance.get("/users");
-    // console.log("coaches", data);
     return data;
   } catch (error) {
     console.error("Failed to fetch Users", error);
@@ -69,7 +67,6 @@ const updateUser = async (userInfo) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(data);
   return data;
 };
 

@@ -9,13 +9,14 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRoute } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ModalDropdown from "react-native-modal-dropdown";
 
 import { BASE_URL } from "../../../api";
@@ -26,17 +27,23 @@ import {
   fetchOneUserById,
 } from "../../../api/UserApi/UserApi";
 import DatePicker from "../../../components/DatePicker";
+import DayCard from "../../../components/DayCard";
+import { removeToken } from "../../../api/storage";
+import {
+  createExercise,
+  deleteExercise,
+  getUserExercises,
+  updateExercise,
+} from "../../../api/ExercisesApi";
+import SelectedPlayerContext from "../../../Context/SelectedPlayerContext";
 
 const Playeredit = () => {
   const route = useRoute();
-  const _id = route.params?._id;
 
+  useFocusEffect(useCallback(() => {}));
   const [startDate, setStartDate] = useState(new Date());
-
-  const [exercises, setExercises] = useState([
-    { id: 1, name: "", sets: "" },
-    // Add more exercises as needed
-  ]);
+  const [selectedPlayer, setSelectedPlayer] = useContext(SelectedPlayerContext);
+  const _id = selectedPlayer;
 
   const { data } = useQuery({
     queryKey: ["my Athletes", _id],
@@ -45,11 +52,11 @@ const Playeredit = () => {
   });
 
   const { data: player } = useQuery({
-    queryKey: ["my Athletes", _id],
+    queryKey: ["my Athletes", selectedPlayer],
     queryFn: () => fetchOneUserById(_id),
     enabled: !!_id,
   });
-
+  console.log({ player });
   const [days, setDays] = useState([
     "Day 1",
     "Day 2",
@@ -59,6 +66,17 @@ const Playeredit = () => {
     "Day 6",
     "Day 7",
   ]);
+
+  const [exercises, setExercises] = useState({
+    "Day 1": [],
+    "Day 2": [],
+    "Day 3": [],
+    "Day 4": [],
+    "Day 5": [],
+    "Day 6": [],
+    "Day 7": [],
+  });
+
   const [editMode, setEditMode] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseSets, setNewExerciseSets] = useState("");
@@ -70,39 +88,110 @@ const Playeredit = () => {
       .add(1 * 0, "weeks")
       .format("DD MMM YYYY")}`
   );
+  const [weekSelected, setWeekSelected] = useState(1);
+  const getExactDate = (startDate, selectedDay, weekSelected) => {
+    const start = dayjs(startDate, "DD/MM/YYYY");
+
+    const dayNumber = parseInt(selectedDay.replace("Day ", ""), 10);
+
+    const baseDate = start.startOf("week").add(dayNumber, "day");
+
+    const resultDate = baseDate.add(weekSelected, "week");
+
+    return resultDate.format("MM/DD/YYYY");
+  };
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
+
+  const { data: exer, refetch } = useQuery({
+    queryKey: ["exercises--", _id ? player?._id : data?.[0]?._id],
+    queryFn: () => getUserExercises(_id ? player?._id : data?.[0]?._id),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: (info) => createExercise(_id || data?.[0]?._id, info),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const { mutate: mutateUpdate } = useMutation({
+    mutationFn: (info) => updateExercise(info),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const { mutate: mutateDelete } = useMutation({
+    mutationFn: (id) => deleteExercise(id),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const getExer = () => {
+    const weeklyExercises = {
+      "Day 1": [],
+      "Day 2": [],
+      "Day 3": [],
+      "Day 4": [],
+      "Day 5": [],
+      "Day 6": [],
+      "Day 7": [],
+    };
+
+    const start = dayjs(dayjs(startDate).add(weekSelected, "week")).startOf(
+      "week"
+    ); // Get the start of the week
+
+    exer?.forEach((exercise) => {
+      const exerciseDate = dayjs(exercise.day).startOf("day"); // Normalize exercise date to just the day
+      const daysDiff = exerciseDate.diff(start, "day"); // Difference in days from the start of the week
+
+      if (daysDiff >= 0 && daysDiff < 7) {
+        // Ensure the exercise date is within the current week
+        const dayKey = `Day ${daysDiff}`;
+        weeklyExercises[dayKey].push(exercise);
+      }
+    });
+
+    setExercises(weeklyExercises);
+  };
+
+  useEffect(() => {
+    getExer();
+  }, [exer, weekSelected]);
 
   const addExercise = () => {
     if (selectedDay) {
       if (newExerciseName.trim() !== "" && newExerciseSets > 0) {
         const newExercise = {
-          id: Math.random().toString(), // Generate a unique ID for the new exercise
+          id: Math.random().toString(),
           name: newExerciseName,
           sets: parseInt(newExerciseSets, 10),
+          day: getExactDate(startDate, selectedDay, weekSelected),
+          link: "",
         };
-        setExercises({
-          ...exercises,
-          [selectedDay]: [...exercises[selectedDay], newExercise],
-        });
-
-        // TODO
+        mutate(newExercise);
+        setExercises((prevExercises) => ({
+          ...prevExercises,
+          [selectedDay]: [...prevExercises[selectedDay], newExercise],
+        }));
         setNewExerciseName("");
         setNewExerciseSets("");
       } else {
         Alert.alert(
-          "Don't do that MAN!",
+          "Invalid Input",
           "Please enter a valid exercise name and sets."
         );
       }
     } else {
-      Alert.alert(
-        "Don't do that MAN!",
-        "Please select a day to add exercise to it."
-      );
+      Alert.alert("No Day Selected", "Please select a day to add an exercise.");
     }
   };
+  // TODO
 
   const addDay = () => {
     if (newDayName.trim() !== "") {
@@ -113,16 +202,8 @@ const Playeredit = () => {
     }
   };
 
-  const updateExercise = (id, field, value) => {
-    setExercises(
-      exercises.map((exercise) =>
-        exercise.id === id ? { ...exercise, [field]: value } : exercise
-      )
-    );
-  };
-
-  const deleteExercise = (id) => {
-    setExercises(exercises.filter((exercise) => exercise.id !== id));
+  const updateExercise_ = (exerciseId, name, sets) => {
+    mutateUpdate({ id: exerciseId, name, sets });
   };
 
   const handlePressingDayWhenEdit = (index) => {
@@ -193,7 +274,21 @@ const Playeredit = () => {
             <View key={`week-${i + 1}`} style={styles.weekContainer}>
               <View style={styles.weekHeader}>
                 <Text style={styles.weekTitle}>Start date </Text>
-                <DatePicker date={startDate} setDate={setStartDate} />
+                <DatePicker
+                  date={startDate}
+                  setDate={(s) => {
+                    const weekStart = dayjs(s).startOf("week");
+                    setStartDate(new Date(weekStart));
+                    setWeekSelected(0);
+                    getExer();
+                    setModaldropDown(
+                      `Week ${0 + 1}           ${dayjs(startDate)
+                        .startOf("week")
+                        .add(1 * 0, "weeks")
+                        .format("DD MMM YYYY")}`
+                    );
+                  }}
+                />
               </View>
 
               <View style={[styles.weekHeader, { marginTop: 10 }]}>
@@ -252,18 +347,16 @@ const Playeredit = () => {
                     width: "60%",
                     marginTop: 10,
                   }}
-                  options={[...Array(+numOfWeeks || 12).keys()].map(
-                    (_, i) =>
-                      `Week ${i + 1}           ${dayjs(startDate)
-                        .add(1 * i, "weeks")
-                        .format("DD MMM YYYY")}`
-                  )}
-                  defaultValue={`started on ${dayjs(startDate).format(
-                    "DD MMM YYYY"
-                  )}`}
+                  options={[...Array(+numOfWeeks || 12).keys()].map((_, i) => {
+                    return `Week ${i + 1}           ${dayjs(startDate)
+                      .startOf("week")
+                      .add(1 * i, "weeks")
+                      .format("DD MMM YYYY")}`;
+                  })}
                   onSelect={(index, value) => {
+                    setWeekSelected(index);
+                    getExer();
                     setModaldropDown(value);
-                    console.log(value);
                   }}
                 >
                   <Text
@@ -285,81 +378,110 @@ const Playeredit = () => {
               </View>
               <View style={styles.dayContainer}>
                 {days.map((day, index) => (
-                  <TouchableOpacity
-                    key={`day-${index + 1}`}
-                    style={styles.day}
-                    onPress={(index) => {
-                      handlePressingDayWhenEdit(index);
-                    }}
-                  >
-                    <Text style={styles.dayTitle}>{day}</Text>
-                    <View style={styles.tableHeader}>
-                      <Text style={styles.tableHeaderText}>Exercise name</Text>
-                      <Text style={styles.tableHeaderText}>Sets needed</Text>
-                      <Text style={styles.tableHeaderText}>Weight Played</Text>
-                      <Text style={styles.tableHeaderText}>Reps played</Text>
-                      {/* Additional headers */}
-                    </View>
-                    {exercises.map((exercise) => (
-                      <View key={exercise.id} style={styles.tableRow}>
-                        {editMode ? (
-                          <>
-                            <TextInput
-                              style={styles.tableRowText}
-                              value={exercise.name}
-                              onChangeText={(value) =>
-                                updateExercise(exercise.id, "name", value)
-                              }
-                            />
-                            <TextInput
-                              style={styles.tableRowText}
-                              value={`${exercise.sets}`}
-                              keyboardType="numeric"
-                              onChangeText={(value) =>
-                                updateExercise(
-                                  exercise.id,
-                                  "sets",
-                                  parseInt(value, 10)
-                                )
-                              }
-                            />
-                            <TextInput
-                              style={styles.tableRowText}
-                              value={`${exercise.sets}`}
-                              keyboardType="numeric"
-                              onChangeText={(value) =>
-                                updateExercise(
-                                  exercise.id,
-                                  "sets",
-                                  parseInt(value, 10)
-                                )
-                              }
-                            />
+                  // <TouchableOpacity
+                  //   key={`day-${index + 1}`}
+                  //   style={[
+                  //     styles.day,
+                  //     {
+                  //       borderWidth: 2,
+                  //       borderColor:
+                  //         editMode && selectedDay == day
+                  //           ? "green"
+                  //           : "transparent",
+                  //     },
+                  //   ]}
+                  //   onPress={() => handlePressingDayWhenEdit(day)} // Pass the day name instead of index
+                  // >
+                  //   <Text style={styles.dayTitle}>{day}</Text>
+                  //   <View style={styles.tableHeader}>
+                  //     <Text style={styles.tableHeaderText}>Exercise name</Text>
+                  //     <Text style={styles.tableHeaderText}>Sets needed</Text>
+                  //     <Text style={styles.tableHeaderText}>Weight played</Text>
+                  //     <Text style={styles.tableHeaderText}>Reps played</Text>
+                  //     {/* Additional headers */}
+                  //   </View>
+                  //   {exercises[day]?.map(
+                  //     (
+                  //       exercise // Use exercises[day] to get exercises for the current day
+                  //     ) => (
+                  //       <View key={exercise.id} style={styles.tableRow}>
+                  //         {editMode ? (
+                  //           <>
+                  //             <TextInput
+                  //               style={styles.tableRowText}
+                  //               value={exercise.name}
+                  //               onChangeText={(value) =>
+                  //                 updateExercise(
+                  //                   day,
+                  //                   exercise.id,
+                  //                   "name",
+                  //                   value
+                  //                 )
+                  //               }
+                  //             />
+                  //             <TextInput
+                  //               style={styles.tableRowText}
+                  //               value={`${exercise.sets}`}
+                  //               keyboardType="numeric"
+                  //               onChangeText={(value) =>
+                  //                 updateExercise(
+                  //                   day,
+                  //                   exercise.id,
+                  //                   "sets",
+                  //                   parseInt(value, 10)
+                  //                 )
+                  //               }
+                  //             />
+                  //             <Text style={styles.tableRowText}>""</Text>
+                  //             <Text style={styles.tableRowText}>""</Text>
+                  //             {/* Additional input fields */}
+                  //             <TouchableOpacity
+                  //               style={styles.deleteButton}
+                  //               onPress={() => deleteExercise(day, exercise.id)}
+                  //             >
+                  //               <Text style={styles.deleteButtonText}>
+                  //                 Delete
+                  //               </Text>
+                  //             </TouchableOpacity>
+                  //           </>
+                  //         ) : (
+                  //           <>
+                  //             {!!exercise.link ? (
+                  //               <TouchableOpacity
+                  //                 onPress={() => {
+                  //                   openLink(exercise.link);
+                  //                 }}
+                  //               >
+                  //                 <Text style={styles.tableRowText}> </Text>
+                  //               </TouchableOpacity>
+                  //             ) : (
+                  //               <Text style={styles.tableRowText}> </Text>
+                  //             )}
 
-                            {/* Additional input fields */}
-                            <TouchableOpacity
-                              style={styles.deleteButton}
-                              onPress={() => deleteExercise(exercise.id)}
-                            >
-                              <Text style={styles.deleteButtonText}>
-                                Delete
-                              </Text>
-                            </TouchableOpacity>
-                          </>
-                        ) : (
-                          <>
-                            <Text style={styles.tableRowText}>
-                              {exercise.name}
-                            </Text>
-                            <Text style={styles.tableRowText}>
-                              {exercise.sets}
-                            </Text>
-                            {/* Additional text fields */}
-                          </>
-                        )}
-                      </View>
-                    ))}
-                  </TouchableOpacity>
+                  //             <Text style={styles.tableRowText}>
+                  //               {exercise.sets}
+                  //             </Text>
+                  //             <Text style={styles.tableRowText}>""</Text>
+                  //             <Text style={styles.tableRowText}>""</Text>
+                  //             {/* Additional text fields */}
+                  //           </>
+                  //         )}
+                  //       </View>
+                  //     )
+                  //   )}
+                  // </TouchableOpacity>
+                  <DayCard
+                    selectedDay={selectedDay}
+                    editMode={editMode}
+                    index={index}
+                    styles={styles}
+                    key={index}
+                    day={day}
+                    mutateUpdate={mutateUpdate}
+                    exercises={exercises}
+                    handlePressingDayWhenEdit={handlePressingDayWhenEdit}
+                    mutateDelete={mutateDelete}
+                  />
                 ))}
               </View>
             </View>
@@ -408,16 +530,13 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     flex: 1,
-    marginTop: -10,
-
-    marginBottom: -28,
   },
   container: {
     flex: 1,
     backgroundColor: "#182026",
     padding: 20,
-    marginBottom: -7,
-    marginTop: -5,
+    marginBottom: -35,
+    marginTop: -120,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
 

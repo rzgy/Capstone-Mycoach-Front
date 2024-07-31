@@ -37,7 +37,6 @@ const LoginAthlete = () => {
       setIsLoading(false);
     },
     onError: (e) => {
-      console.log(e);
       Toast.error("Login failed. Please check your credentials.");
       setIsLoading(false);
     },

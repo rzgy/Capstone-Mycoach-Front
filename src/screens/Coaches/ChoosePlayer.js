@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Modal,
@@ -15,8 +15,11 @@ import { BASE_URL } from "../../api";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { fetchAllUsers } from "../../api/UserApi/UserApi";
+import SelectedPlayerContext from "../../Context/SelectedPlayerContext";
 
 const ChoosePlayer = () => {
+  const [selectedPlayer, setSelectedPlayer] = useContext(SelectedPlayerContext);
+
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUsers,
@@ -41,6 +44,7 @@ const ChoosePlayer = () => {
           {users?.map((user) => (
             <TouchableOpacity
               onPress={() => {
+                setSelectedPlayer(user._id);
                 navigation.navigate("playeredit", { _id: user._id });
               }}
               style={styles.userCard}

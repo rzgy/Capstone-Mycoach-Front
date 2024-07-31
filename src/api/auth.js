@@ -4,9 +4,7 @@ import { storeToken } from "./storage";
 // Coach api
 
 const loginCoach = async (coachInfo) => {
-  console.log("first");
   const { data } = await instance.post("/coaches/login", coachInfo);
-  console.log("data");
   storeToken(data.token, "coach");
   return data;
 };
