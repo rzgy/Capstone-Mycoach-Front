@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from "react-native";
 
 const DayCard = ({
@@ -49,12 +50,42 @@ const DayCard = ({
         {
           borderWidth: 2,
           borderColor:
-            editMode && selectedDay === day ? "green" : "transparent",
+            editMode && selectedDay === day ? "transparent" : "transparent",
+          transform: [
+            {
+              scale: editMode && selectedDay === day ? 1.05 : 1,
+            },
+          ],
+          // Shadow effect to create a glowing effect
+          ...(editMode && selectedDay === day
+            ? {
+                ...(Platform.OS === "ios"
+                  ? {
+                      shadowColor: "grey", // Glowing color
+                      shadowOffset: { width: 0, height: 0 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 10,
+                    }
+                  : {
+                      elevation: 10,
+                      backgroundColor: "#white", // Background color for Android shadow
+                    }),
+              }
+            : {}),
         },
       ]}
       onPress={() => handlePressingDayWhenEdit(day)}
     >
-      <Text style={styles.dayTitle}>{day}</Text>
+      <Text
+        style={[
+          styles.dayTitle,
+          {
+            fontSize: editMode && selectedDay === day ? 18 : 16, // Adjust font size if needed
+          },
+        ]}
+      >
+        {day}
+      </Text>
       <View style={styles.tableHeader}>
         <Text style={styles.tableHeaderText}>Exercise name</Text>
         <Text style={styles.tableHeaderText}>Sets needed</Text>
@@ -70,7 +101,7 @@ const DayCard = ({
                 style={styles.tableRowText}
                 value={
                   info._id === exercise._id
-                    ? !info.name && info.name != ""
+                    ? !info.name && info.name !== ""
                       ? exercise.name
                       : info.name
                     : exercise.name
@@ -89,7 +120,7 @@ const DayCard = ({
                 keyboardType="numeric"
                 value={
                   info._id === exercise._id
-                    ? !info.sets && info.sets != ""
+                    ? !info.sets && info.sets !== ""
                       ? `${exercise.sets}`
                       : info.sets
                     : `${exercise.sets}`

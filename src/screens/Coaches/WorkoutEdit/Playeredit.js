@@ -13,9 +13,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ModalDropdown from "react-native-modal-dropdown";
 
@@ -36,6 +40,7 @@ import {
   updateExercise,
 } from "../../../api/ExercisesApi";
 import SelectedPlayerContext from "../../../Context/SelectedPlayerContext";
+import { colors } from "react-native-elements";
 
 const Playeredit = () => {
   const route = useRoute();
@@ -211,17 +216,26 @@ const Playeredit = () => {
       setSelectedDay(index);
     }
   };
+  const scrollViewRef = useRef(null);
+
+  const navigation = useNavigation();
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y; // Get current scroll position
+  };
 
   return (
     <LinearGradient
       colors={["#6898ab", "#407BFF"]}
       start={{ x: 0, y: 4 }}
       end={{ x: 1, y: 4 }}
-      style={{ flex: 1, borderRadius: 25, overflow: "hidden" }}
+      style={{ flex: 1, borderRadius: 0, overflow: "hidden" }}
     >
       <SafeAreaView style={styles.safeArea}>
         <Text style={styles.pageTitle}>Workout edit</Text>
         <ScrollView
+          ref={scrollViewRef}
+          onScroll={handleScroll} // Pass handleScroll function to ScrollView
+          scrollEventThrottle={16}
           style={styles.container}
           stickyHeaderIndices={[0]}
           contentContainerStyle={{
@@ -275,6 +289,17 @@ const Playeredit = () => {
               <View style={styles.weekHeader}>
                 <Text style={styles.weekTitle}>Start date </Text>
                 <DatePicker
+                  style={{
+                    marginLeft: 10,
+                    color: "white",
+
+                    width: "48%",
+                    borderColor: "white",
+                    borderRadius: 10,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                   date={startDate}
                   setDate={(s) => {
                     const weekStart = dayjs(s).startOf("week");
@@ -378,98 +403,6 @@ const Playeredit = () => {
               </View>
               <View style={styles.dayContainer}>
                 {days.map((day, index) => (
-                  // <TouchableOpacity
-                  //   key={`day-${index + 1}`}
-                  //   style={[
-                  //     styles.day,
-                  //     {
-                  //       borderWidth: 2,
-                  //       borderColor:
-                  //         editMode && selectedDay == day
-                  //           ? "green"
-                  //           : "transparent",
-                  //     },
-                  //   ]}
-                  //   onPress={() => handlePressingDayWhenEdit(day)} // Pass the day name instead of index
-                  // >
-                  //   <Text style={styles.dayTitle}>{day}</Text>
-                  //   <View style={styles.tableHeader}>
-                  //     <Text style={styles.tableHeaderText}>Exercise name</Text>
-                  //     <Text style={styles.tableHeaderText}>Sets needed</Text>
-                  //     <Text style={styles.tableHeaderText}>Weight played</Text>
-                  //     <Text style={styles.tableHeaderText}>Reps played</Text>
-                  //     {/* Additional headers */}
-                  //   </View>
-                  //   {exercises[day]?.map(
-                  //     (
-                  //       exercise // Use exercises[day] to get exercises for the current day
-                  //     ) => (
-                  //       <View key={exercise.id} style={styles.tableRow}>
-                  //         {editMode ? (
-                  //           <>
-                  //             <TextInput
-                  //               style={styles.tableRowText}
-                  //               value={exercise.name}
-                  //               onChangeText={(value) =>
-                  //                 updateExercise(
-                  //                   day,
-                  //                   exercise.id,
-                  //                   "name",
-                  //                   value
-                  //                 )
-                  //               }
-                  //             />
-                  //             <TextInput
-                  //               style={styles.tableRowText}
-                  //               value={`${exercise.sets}`}
-                  //               keyboardType="numeric"
-                  //               onChangeText={(value) =>
-                  //                 updateExercise(
-                  //                   day,
-                  //                   exercise.id,
-                  //                   "sets",
-                  //                   parseInt(value, 10)
-                  //                 )
-                  //               }
-                  //             />
-                  //             <Text style={styles.tableRowText}>""</Text>
-                  //             <Text style={styles.tableRowText}>""</Text>
-                  //             {/* Additional input fields */}
-                  //             <TouchableOpacity
-                  //               style={styles.deleteButton}
-                  //               onPress={() => deleteExercise(day, exercise.id)}
-                  //             >
-                  //               <Text style={styles.deleteButtonText}>
-                  //                 Delete
-                  //               </Text>
-                  //             </TouchableOpacity>
-                  //           </>
-                  //         ) : (
-                  //           <>
-                  //             {!!exercise.link ? (
-                  //               <TouchableOpacity
-                  //                 onPress={() => {
-                  //                   openLink(exercise.link);
-                  //                 }}
-                  //               >
-                  //                 <Text style={styles.tableRowText}> </Text>
-                  //               </TouchableOpacity>
-                  //             ) : (
-                  //               <Text style={styles.tableRowText}> </Text>
-                  //             )}
-
-                  //             <Text style={styles.tableRowText}>
-                  //               {exercise.sets}
-                  //             </Text>
-                  //             <Text style={styles.tableRowText}>""</Text>
-                  //             <Text style={styles.tableRowText}>""</Text>
-                  //             {/* Additional text fields */}
-                  //           </>
-                  //         )}
-                  //       </View>
-                  //     )
-                  //   )}
-                  // </TouchableOpacity>
                   <DayCard
                     selectedDay={selectedDay}
                     editMode={editMode}
@@ -492,6 +425,7 @@ const Playeredit = () => {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.keyboardAvoidingView}
+            keyboardVerticalOffset={100}
           >
             <>
               <View style={styles.addExerciseView}>
@@ -526,20 +460,19 @@ const Playeredit = () => {
 };
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
-    marginBottom: 45,
+    marginBottom: 65,
   },
   safeArea: {
     flex: 1,
+    marginBottom: -10,
   },
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#182026",
     padding: 20,
     marginBottom: -35,
     marginTop: -120,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-
+    borderRadius: 0,
     overflow: "hidden",
   },
   backButton: {
@@ -634,7 +567,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   addInput: {
-    marginTop: 15,
+    marginTop: 50,
     marginHorizontal: 10,
     flex: 1,
     marginRight: 10,
@@ -648,7 +581,7 @@ const styles = StyleSheet.create({
   addButton: {
     padding: 5,
     marginRight: 10,
-    marginTop: 15,
+    marginTop: 50,
     backgroundColor: "#101518",
     borderRadius: 50,
     alignItems: "center",

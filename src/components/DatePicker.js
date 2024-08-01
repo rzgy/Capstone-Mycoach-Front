@@ -12,10 +12,12 @@ const DatePicker = ({ date = new Date(), setDate = () => {} }) => {
     <View>
       <DateTimePicker
         style={{
-          backgroundColor: "white",
+          width: "100%",
           borderRadius: 12,
           overflow: "hidden",
         }}
+        accentColor="grey"
+        textColor="red"
         testID="dateTimePicker"
         value={date}
         mode="date"

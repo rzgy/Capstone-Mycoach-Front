@@ -30,7 +30,17 @@ const loginUser = async (userInfo) => {
 
 const registerUser = async (userInfo) => {
   const formData = new FormData();
-  for (const key in userInfo) formData.append(key, userInfo[key]);
+  for (const key in userInfo) {
+    if (key === "image") {
+      formData.append(key, {
+        uri: userInfo[key],
+        name: userInfo[key].split("/").pop(),
+        type: "image/jpeg",
+      });
+    } else {
+      formData.append(key, userInfo[key]);
+    }
+  }
 
   const { data } = await instance.post("/users/register", formData);
   storeToken(data.token, "athlete");

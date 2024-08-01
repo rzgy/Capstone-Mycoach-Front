@@ -55,9 +55,7 @@ const Profile = () => {
               </Text>
             ))
           ) : (
-            <Text style={styles.displayName}>
-              users data is not available or not an array.
-            </Text>
+            <Text style={styles.displayName}>Soud Alenezi</Text>
           )}
         </View>
         <View style={styles.menu}>

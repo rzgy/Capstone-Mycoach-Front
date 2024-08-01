@@ -6,6 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CoachProfile from "../../screens/Coaches/CoachProfile/CoachProfile";
 import EditProfile from "../../screens/Coaches/CoachProfile/EditProfile";
 import ContactUs from "../../screens/Coaches/CoachProfile/ContactUs";
+import ChatRoom from "../../screens/Coaches/CoachChat/ChatRoom";
+import Chat from "../../screens/Coaches/CoachChat/Chat";
 
 const CoachStackNav = () => {
   const stack = createStackNavigator();
@@ -13,8 +15,18 @@ const CoachStackNav = () => {
     <stack.Navigator
       screenOptions={{
         headerShown: false,
+        initialRouteName: "ChatRoom",
       }}
     >
+      <stack.Screen name="ChatRoom" component={ChatRoom} />
+      <stack.Screen
+        name="chat"
+        options={{
+          headerShown: true,
+          title: "Chat",
+        }}
+        component={Chat}
+      />
       <stack.Screen name="coachProfile" component={CoachProfile} />
       <stack.Screen name="AboutUs" component={AboutUs} />
       <stack.Screen name="support" component={Support} />

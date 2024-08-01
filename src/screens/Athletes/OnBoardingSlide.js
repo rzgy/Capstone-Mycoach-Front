@@ -11,27 +11,30 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
-
+import firstImage from "../../../assets/PT1.png";
+import scondImage from "../../../assets/PT2.png";
+import thirdImage from "../../../assets/PT3.png";
+import { LinearGradient } from "expo-linear-gradient";
 const { width: screenWidth } = Dimensions.get("window");
 
 const slides = [
   {
-    title: "Gourmet Quality, Hassle-Free",
+    title: "From Beginner to Pro",
     description:
-      "Savor chef-inspired meals without the hassle of cooking or cleaning up, with our gourmet meal delivery service.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      " Introducing the My Coach, the ideal solution to track your workouts and achieve your fitness goals effortlessly and effectively.",
+    image: firstImage, // Replace with your provided image URL
   },
   {
-    title: "Delicious and Nutritious Fresh Meals",
+    title: "Your Perfect Companion \n for an Active Lifestyle",
     description:
-      "Enjoy healthy and delicious meals delivered to your doorstep, prepared with fresh, high-quality ingredients.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      "Our app features a simple and elegant \n user interface, allowing you to monitor your daily workouts, record your progress,\n and receive personalized advice \n from top-notch fitness coaches.",
+    image: scondImage, // Replace with your provided image URL
   },
   {
-    title: "Your Coach can track your improvements here",
+    title: "Your Health Journey \n Begins Here ",
     description:
-      "Create your own customized meal plan from our selection of healthy meal options.",
-    image: "https://via.placeholder.com/300", // Replace with your provided image URL
+      "Start your fitness journey today with the My Coach and enjoy reaching your health and fitness goals in an innovative and efficient way.",
+    image: thirdImage, // Replace with your provided image URL
   },
 ];
 
@@ -51,7 +54,7 @@ const OnBoardingSlide = () => {
   const renderItem = ({ item }) => (
     <View style={styles.slide}>
       <Text style={styles.title}>{item.title}</Text>
-      <Image style={styles.image} source={{ uri: item.image }} />
+      <Image style={styles.image} source={item.image} />
       <Text style={styles.description}>{item.description}</Text>
     </View>
   );
@@ -85,8 +88,31 @@ const OnBoardingSlide = () => {
           />
         ))}
       </View>
-      <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-        <Text style={styles.continueButtonText}>Continue</Text>
+
+      <TouchableOpacity
+        title="Login"
+        color="white"
+        onPress={handleContinue}
+        width="80%"
+        style={{
+          marginTop: "auto",
+          paddingHorizontal: 20,
+          paddingVertical: 12,
+        }}
+      >
+        <LinearGradient
+          colors={["#60C3FF", "#407BFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            alignItems: "center",
+            padding: 12,
+            borderRadius: 28,
+            marginBottom: 20,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>Continue</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -119,7 +145,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height: 300,
+    height: 310,
     marginBottom: 20,
   },
   description: {
@@ -142,7 +168,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   continueButton: {
-    backgroundColor: "#6898ab",
     padding: 15,
     borderRadius: 28,
     marginBottom: 40,

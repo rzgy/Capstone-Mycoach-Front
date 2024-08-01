@@ -8,6 +8,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import CoachStackNav from "../CoachNav/CoachStackNav";
 import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
 import AthleteStackNav from "./AthleteStackNav";
+import WorkoutStackAthlete from "../WorkoutStackAthlete";
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {
   return (
@@ -37,8 +38,8 @@ const MainAthleteNav = () => {
       }}
     >
       <Tab.Screen
-        name="workoutPlan"
-        component={WorkoutPlan}
+        name="workoutStackAthlete"
+        component={WorkoutStackAthlete}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
             <FontAwesome6

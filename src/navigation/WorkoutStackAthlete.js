@@ -5,8 +5,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
 import FollowUp from "../screens/Coaches/WorkoutEdit/FollowUp";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import WorkoutPlan from "../screens/Athletes/workouts/WorkoutPlan";
 const Tab = createMaterialTopTabNavigator();
-const WorkoutStack = () => {
+const WorkoutStackAthlete = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -40,8 +41,8 @@ const WorkoutStack = () => {
       }}
     >
       <Tab.Screen
-        name="Playeredit"
-        component={Playeredit}
+        name="WorkoutPlan"
+        component={WorkoutPlan}
         options={{ width: 200 }}
       />
       <Tab.Screen
@@ -53,6 +54,6 @@ const WorkoutStack = () => {
   );
 };
 
-export default WorkoutStack;
+export default WorkoutStackAthlete;
 
 const styles = StyleSheet.create({});

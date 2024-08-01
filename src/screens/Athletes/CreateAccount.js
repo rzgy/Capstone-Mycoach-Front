@@ -1,24 +1,22 @@
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from "react-native";
-import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
-import UserContext from "../../Context/UserContext";
 import { useMutation } from "@tanstack/react-query";
 import ToastManager, { Toast } from "toastify-react-native";
 import { registerUser } from "../../api/auth";
-import { ScrollView } from "react-native-gesture-handler";
+import * as ImagePicker from "expo-image-picker";
 import Checkbox from "expo-checkbox";
 import { Feather } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import ModalDropdown from "react-native-modal-dropdown";
-import { ImagePickerIOS } from "react-native";
+
 const CreateAccount = () => {
   const navigation = useNavigation();
 
@@ -33,6 +31,7 @@ const CreateAccount = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setChecked] = useState(false);
 
   const { mutate } = useMutation({
     mutationKey: ["Register"],
@@ -42,7 +41,7 @@ const CreateAccount = () => {
       setIsLoading(false);
       navigation.navigate("loginAthlete");
     },
-    onError: (e) => {
+    onError: () => {
       Toast.error("Registration failed. Please try again.");
       setIsLoading(false);
     },
@@ -50,22 +49,22 @@ const CreateAccount = () => {
 
   const handleFormSubmit = () => {
     setIsLoading(true);
-
     mutate();
   };
+
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setUserInfo(result.assets[0].uri);
+      setUserInfo((prev) => ({ ...prev, image: result.assets[0].uri }));
     }
   };
+
   const handleChange = (name, value) => {
     setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
@@ -73,18 +72,19 @@ const CreateAccount = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={{ color: "white" }}>{"<"}</Text>
-      </TouchableOpacity>
       <ScrollView
-        showsVerticalScrollIndicator={false} // Hide the vertical scroll indicator
-        showsHorizontalScrollIndicator={false} // Hide the horizontal scroll indicator
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       >
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={{ color: "white" }}>{"<"}</Text>
+        </TouchableOpacity>
         <ToastManager />
 
         <Text style={styles.title}>Register</Text>
@@ -109,22 +109,12 @@ const CreateAccount = () => {
         <Text style={styles.inputLabel}>Password</Text>
         <View style={styles.passwordInputContainer}>
           <TextInput
-            style={{
-              height: 45,
-              backgroundColor: "#101518",
-              color: "white",
-              borderRadius: 10,
-              padding: 10,
-              paddingLeft: 15,
-
-              width: "100%",
-            }}
+            style={styles.passwordInput}
             value={userInfo.password}
             onChangeText={(value) => handleChange("password", value)}
-            secureTextEntry={!showPassword} // Use the showPassword state to control visibility
+            secureTextEntry={!showPassword}
             placeholderTextColor="grey"
           />
-
           <TouchableOpacity
             style={styles.eyeButton}
             onPress={togglePasswordVisibility}
@@ -140,27 +130,10 @@ const CreateAccount = () => {
         {/* Gender Dropdown */}
         <Text style={styles.inputLabel}>Gender</Text>
         <ModalDropdown
-          style={[
-            styles.input,
-            {
-              paddingHorizontal: 12,
-              paddingTop: 15,
-              paddingBottom: 10,
-              height: 45,
-            },
-          ]}
-          textStyle={{ color: "white", backgroundColor: "101518" }}
-          dropdownTextStyle={{
-            color: "white",
-            fontSize: 16,
-            backgroundColor: "101518",
-            height: 39,
-          }}
-          dropdownStyle={{
-            backgroundColor: "#101518",
-            borderRadius: 10,
-            height: 80,
-          }}
+          style={styles.input}
+          textStyle={styles.dropdownText}
+          dropdownTextStyle={styles.dropdownText}
+          dropdownStyle={styles.dropdown}
           options={["Male", "Female"]}
           defaultValue={userInfo.gender}
           onSelect={(index, value) => handleChange("gender", value)}
@@ -187,41 +160,29 @@ const CreateAccount = () => {
 
         {/* Profile Picture Input */}
         <Text style={styles.inputLabel}>Profile Picture</Text>
-        <TouchableOpacity style={styles.input} onPress={pickImage}>
-          <Text
-            style={{
-              color: "#276285",
-              fontWeight: "bold",
-              fontSize: 12,
-              textAlign: "center",
-              padding: 5,
-
-              borderRadius: 10,
-            }}
-          >
-            Choose Image
-          </Text>
+        <TouchableOpacity onPress={pickImage}>
+          {userInfo.image ? (
+            <Image source={{ uri: userInfo.image }} style={styles.image} />
+          ) : (
+            <View style={styles.input}>
+              <Text style={styles.chooseImageText}>Choose Image</Text>
+            </View>
+          )}
         </TouchableOpacity>
 
-        {/* Display the selected image */}
-
-        {userInfo.image && (
-          <Image
-            source={{ uri: userInfo.image }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-              marginBottom: 20,
-            }}
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isChecked}
+            onValueChange={setChecked}
           />
-        )}
-
+          <Text style={styles.checkboxLabel}>Accept Terms and Conditions</Text>
+        </View>
         <TouchableOpacity
           style={styles.registerButton}
           onPress={handleFormSubmit}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>Register</Text>
+          <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -229,20 +190,6 @@ const CreateAccount = () => {
 };
 
 const styles = StyleSheet.create({
-  passwordInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#101518",
-    borderRadius: 10,
-
-    marginBottom: 20,
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 10,
-    width: 30,
-  },
-
   container: {
     flex: 1,
     backgroundColor: "#182026",
@@ -251,7 +198,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     top: 50,
-    left: 20,
+    left: 0,
     backgroundColor: "#101518",
     borderRadius: 100,
     width: 40,
@@ -280,6 +227,61 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#101518",
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  passwordInput: {
+    height: 45,
+    backgroundColor: "#101518",
+    color: "white",
+    borderRadius: 10,
+    padding: 10,
+    paddingLeft: 15,
+    width: "100%",
+  },
+  eyeButton: {
+    position: "absolute",
+    right: 10,
+    width: 30,
+  },
+  dropdownText: {
+    color: "white",
+  },
+  dropdown: {
+    backgroundColor: "#101518",
+    borderRadius: 10,
+    height: 80,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 20,
+  },
+  chooseImageText: {
+    color: "#276285",
+    fontWeight: "bold",
+    fontSize: 12,
+    textAlign: "center",
+    padding: 5,
+    borderRadius: 10,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  checkbox: {
+    margin: 8,
+  },
+  checkboxLabel: {
+    color: "white",
+    fontWeight: "bold",
+  },
   registerButton: {
     padding: 15,
     backgroundColor: "#6898ab",
@@ -287,6 +289,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 50,
     marginBottom: 20,
+  },
+  registerButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

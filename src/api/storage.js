@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import * as SecureStore from "expo-secure-store";
+import { getItemAsync, setItemAsync } from "expo-secure-store";
 
 const storeToken = async (token, name) => {
   await SecureStore.setItemAsync("token", token);
@@ -11,6 +12,14 @@ const getToken = async () => {
 };
 const getName = async () => {
   return await SecureStore.getItemAsync("name");
+};
+
+const setToken = async (token) => {
+  try {
+    await setItemAsync("token", token);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const removeToken = async () => {
@@ -31,4 +40,4 @@ const checkToken = async () => {
   return false;
 };
 
-export { storeToken, getToken, removeToken, checkToken, getName };
+export { storeToken, getToken, removeToken, checkToken, getName, setToken };

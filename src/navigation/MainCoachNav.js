@@ -1,17 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChoosePlayer from "../screens/Coaches/ChoosePlayer";
-import Playeredit from "../screens/Coaches/WorkoutEdit/Playeredit";
+
 import CoachStackNav from "./CoachNav/CoachStackNav";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
 import WorkoutStack from "./WorkoutStack";
+import CustomTabBar from "../components/CustomTabBar";
 
 const Tab = createBottomTabNavigator();
-const MainAthleteNav = () => {
+const MainCoachNav = () => {
+  const [scrollHandler, setScrollHandler] = useState(null);
   return (
     <Tab.Navigator
+      tabBar={(props) => (
+        <CustomTabBar {...props} setScrollHandler={setScrollHandler} />
+      )}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -21,18 +26,14 @@ const MainAthleteNav = () => {
         tabBarStyle: {
           backgroundColor: "#101518",
           position: "absolute",
-
           borderTopWidth: 0,
-
-          bottom: 30,
-          left: 20,
-          right: 20,
+          paddingTop: 27,
           elevation: 0,
-          height: "9%",
           alignItems: "center",
           justifyContent: "center",
           width: "90%",
-          padding: 25,
+          marginLeft: "5%",
+
           borderRadius: 40,
         },
       }}
@@ -81,6 +82,6 @@ const MainAthleteNav = () => {
   );
 };
 
-export default MainAthleteNav;
+export default MainCoachNav;
 
 const styles = StyleSheet.create({});

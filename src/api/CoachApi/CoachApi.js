@@ -1,6 +1,14 @@
 import instance from "../index";
 import * as SecureStore from "expo-secure-store";
 
+const searchCoach = async (query) => {
+  try {
+    const { data } = await instance.post("/coaches/search", query);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 const fetchAllCoaches = async () => {
   try {
     const { data } = await instance.get("/coaches");
@@ -72,16 +80,11 @@ const updateCoach = async (coachInfo) => {
   return data;
 };
 
-const me = async () => {
-  const { data } = await instance.get("/coaches/me");
-
-  return data;
-};
 export {
   fetchAllCoaches,
   fetchOneCoach,
   deleteCoaches,
   updateCoach,
   fetchOneCoachById,
-  me,
+  searchCoach,
 };

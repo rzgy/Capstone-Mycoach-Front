@@ -30,6 +30,7 @@
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-modal-selector": "^2.1.2",
@@ -38,6 +39,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.1.0",
+    "socket.io-client": "^4.7.5",
     "toastify-react-native": "^5.0.0"
   },
   "devDependencies": {

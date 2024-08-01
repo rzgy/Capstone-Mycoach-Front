@@ -11,6 +11,7 @@ import CoachStackNav from "./src/navigation/CoachNav/CoachStackNav";
 import UserContext from "./src/Context/UserContext";
 import MainAthleteNav from "./src/navigation/AthleteNav/MainAthleteNav";
 import SelectedPlayerContext from "./src/Context/SelectedPlayerContext";
+import { socket } from "./src/api";
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -35,15 +36,14 @@ export default function App() {
 
   useEffect(() => {
     checkToken();
-  });
+    socket.connect();
+  }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SelectedPlayerContext.Provider
-        value={[selectedPlayer, setSelectedPlayer]}
-      >
-        <CoachContext.Provider value={[coach, setCoach]}>
-          <UserContext.Provider value={[user, setUser]}>
+    <SelectedPlayerContext.Provider value={[selectedPlayer, setSelectedPlayer]}>
+      <CoachContext.Provider value={[coach, setCoach]}>
+        <UserContext.Provider value={[user, setUser]}>
+          <QueryClientProvider client={new QueryClient()}>
             <View style={styles.container}>
               <NavigationContainer>
                 {coach ? (
@@ -55,10 +55,10 @@ export default function App() {
                 )}
               </NavigationContainer>
             </View>
-          </UserContext.Provider>
-        </CoachContext.Provider>
-      </SelectedPlayerContext.Provider>
-    </QueryClientProvider>
+          </QueryClientProvider>
+        </UserContext.Provider>
+      </CoachContext.Provider>
+    </SelectedPlayerContext.Provider>
   );
 }
 

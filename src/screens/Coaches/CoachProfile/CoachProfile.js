@@ -32,7 +32,7 @@ const CoachProfile = () => {
     removeToken();
   };
 
-  const { data } = useQuery({
+  const { data: Coach } = useQuery({
     queryKey: ["coach"],
     queryFn: me,
   });
@@ -43,7 +43,7 @@ const CoachProfile = () => {
         <View style={styles.header}>
           <Text style={styles.greeting}></Text>
 
-          <Text>{data}</Text>
+          <Text>{Coach?.fullname}</Text>
         </View>
 
         <View style={styles.menu}>
