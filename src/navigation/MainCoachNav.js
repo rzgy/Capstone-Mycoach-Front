@@ -8,8 +8,16 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
 import WorkoutStack from "./WorkoutStack";
 import CustomTabBar from "../components/CustomTabBar";
+import { createStackNavigator } from "@react-navigation/stack";
+import Chat from "../screens/Coaches/CoachChat/Chat";
+import CoachProfile from "../screens/Coaches/CoachProfile/CoachProfile";
+import AboutUs from "../screens/Coaches/CoachProfile/AboutUs";
+import Support from "../screens/Coaches/CoachProfile/Support";
+import EditProfile from "../screens/Coaches/CoachProfile/EditProfile";
+import ContactUs from "../screens/Coaches/CoachProfile/ContactUs";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 const MainCoachNav = () => {
   const [scrollHandler, setScrollHandler] = useState(null);
   return (
@@ -82,6 +90,27 @@ const MainCoachNav = () => {
   );
 };
 
+const ChatNavigation = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Go Back" component={MainCoachNav} />
+      <Stack.Screen
+        name="chat"
+        options={{
+          headerShown: true,
+          title: "Chat",
+        }}
+        component={Chat}
+      />
+      <Stack.Screen name="coachProfile" component={CoachProfile} />
+      <Stack.Screen name="AboutUs" component={AboutUs} />
+      <Stack.Screen name="support" component={Support} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="ContactUs" component={ContactUs} />
+    </Stack.Navigator>
+  );
+};
+export { ChatNavigation };
 export default MainCoachNav;
 
 const styles = StyleSheet.create({});

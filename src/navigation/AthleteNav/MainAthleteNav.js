@@ -4,11 +4,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { FontAwesome5 } from "@expo/vector-icons";
-
+import Ionicons from "@expo/vector-icons/Ionicons";
 import CoachStackNav from "../CoachNav/CoachStackNav";
 import WorkoutPlan from "../../screens/Athletes/workouts/WorkoutPlan";
 import AthleteStackNav from "./AthleteStackNav";
 import WorkoutStackAthlete from "../WorkoutStackAthlete";
+import ChatRoom from "../../screens/Coaches/CoachChat/ChatRoom";
+import Chat from "../../screens/Coaches/CoachChat/Chat";
 const Tab = createBottomTabNavigator();
 const MainAthleteNav = () => {
   return (
@@ -46,6 +48,21 @@ const MainAthleteNav = () => {
               name="dumbbell"
               size={24}
               color={focused ? color : "#FFFFFF"} // Use active tint color when focused, otherwise white
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Chat2"
+        component={Chat}
+        options={{
+          tabBarHideOnKeyboard: true,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name="chatbubbles"
+              size={24}
+              color={focused ? color : "#FFFFFF"}
             />
           ),
         }}

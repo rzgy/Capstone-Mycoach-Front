@@ -19,14 +19,7 @@ const CoachStackNav = () => {
       }}
     >
       <stack.Screen name="ChatRoom" component={ChatRoom} />
-      <stack.Screen
-        name="chat"
-        options={{
-          headerShown: true,
-          title: "Chat",
-        }}
-        component={Chat}
-      />
+
       <stack.Screen name="coachProfile" component={CoachProfile} />
       <stack.Screen name="AboutUs" component={AboutUs} />
       <stack.Screen name="support" component={Support} />

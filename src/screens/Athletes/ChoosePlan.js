@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Modal,
@@ -13,9 +13,12 @@ import { Image } from "react-native-elements";
 import { BASE_URL } from "../../api";
 import { fetchAllCoaches } from "../../api/CoachApi/CoachApi";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { Ionicons } from "@expo/vector-icons";
+import SelectedCoachContext from "../../Context/SelectedCoachContext";
 
 const ChoosePlan = () => {
+  const [selectedCoach, setSelectedCoach] = useContext(SelectedCoachContext);
   const [showModal, setShowModal] = useState(false);
   const { data: coaches } = useQuery({
     queryKey: ["coaches"],
@@ -44,9 +47,14 @@ const ChoosePlan = () => {
           <Modal visible={showModal} transparent={true}>
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Hello!</Text>
+                <Text style={styles.modalTitle}>Coach Plan</Text>
                 <Text style={styles.modalText}>
-                  Welcome to My Coach Application
+                  Initial Consultation: $100{"\n"}
+                  Weekly Coaching Sessions: $80{"\n"}
+                  Monthly Package: $300 {"\n"}
+                  for 4 sessions {"\n"}
+                  Quarterly Package: $850 {"\n"}
+                  for 12 sessions
                 </Text>
                 <View style={styles.modalButtons}>
                   <TouchableOpacity
@@ -68,7 +76,10 @@ const ChoosePlan = () => {
 
           {coaches?.map((coach) => (
             <TouchableOpacity
-              onPress={() => setShowModal(true)}
+              onPress={() => {
+                setShowModal(true);
+                setSelectedCoach(coach._id);
+              }}
               style={styles.coachCard}
               key={coach._id}
             >

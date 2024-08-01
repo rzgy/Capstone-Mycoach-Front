@@ -28,9 +28,9 @@ const ChatRoom = () => {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("coachProfile")}
         >
-          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+          <Ionicons name="settings-outline" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.title}>Chat With Your Athlete</Text>
 
@@ -68,8 +68,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   backButton: {
-    alignSelf: "flex-start",
+    alignSelf: "flex-end",
     marginBottom: 20,
+    color: "white",
   },
   title: {
     fontSize: 32,

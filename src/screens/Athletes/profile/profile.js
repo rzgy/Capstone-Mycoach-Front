@@ -55,7 +55,7 @@ const Profile = () => {
               </Text>
             ))
           ) : (
-            <Text style={styles.displayName}>Soud Alenezi</Text>
+            <Text style={styles.displayName}>Ali Alsarraf</Text>
           )}
         </View>
         <View style={styles.menu}>
